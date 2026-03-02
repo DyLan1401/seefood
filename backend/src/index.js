@@ -223,9 +223,17 @@ app.post("/api/admin/login", async (req, res) => {
 //lấy danh mục
 app.get("/api/categories", async (req, res) => {
     try {
-        const [rows] = await pool.query(
-            "SELECT id, name, slug, image_url, created_at FROM categories ORDER BY id DESC"
-        );
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 10;
+        const offset = (page - 1) * limit;
+
+        let sql =
+            "SELECT id, name, slug, image_url, created_at FROM categories ORDER BY id DESC";
+        const params = [];
+        sql += ` LIMIT ? OFFSET ? `;
+        params.push(limit, offset); // Nạp tham số vào mảng
+
+        const [rows] = await pool.query(sql, params);
         res.json(rows);
     } catch (err) {
         res.status(500).json({ error: err.message });
@@ -237,7 +245,9 @@ app.get("/api/categories", async (req, res) => {
 app.get("/api/products", async (req, res) => {
     try {
         // const { search = "", category = "" } = req.query;
-
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 10;
+        const offset = (page - 1) * limit;
         let sql = `
       SELECT
         p.id, p.name, p.slug, p.price, p.sale_price, p.stock,
@@ -254,12 +264,16 @@ app.get("/api/products", async (req, res) => {
         //     params.push(`%${search}%`);
         // }
 
+
         // if (category) {
         //     sql += ` AND c.slug = ? `;
         //     params.push(category);
         // }
 
         sql += ` ORDER BY p.id DESC `;
+
+        sql += ` LIMIT ? OFFSET ? `;
+        params.push(limit, offset); // Nạp tham số vào mảng
 
         const [rows] = await pool.query(sql, params);
         res.json(rows);
