@@ -25,7 +25,7 @@ export default function Products() {
             </div>
             <div className="w-full h-full  p-5 ">
                 <div className=" text-xl  rounded-t-lg bg-[#BF4E2C] p-3 font-semibold text-start">
-                    SẢN PHẨM
+                    TẤT CẢ SẢN PHẨM
                 </div>
                 <div className="grid grid-cols-2 p-2 justify-center items-center md:grid-cols-4 gap-4">
                     {product?.map((p) => (

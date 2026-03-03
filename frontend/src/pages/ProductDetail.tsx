@@ -4,8 +4,9 @@ import api from "../api/axios"
 import { useParams } from "react-router-dom";
 import Header from "../component/Header";
 import Footer from "../component/Footer";
+import { useCartStore } from "../store/cartStore";
 export default function ProductDetail() {
-
+    const addItem = useCartStore((s) => s.addItem);
     const { slug } = useParams();
     const { data, isLoading, error } = useQuery<Product>({
         queryKey: ["product", slug],
@@ -54,7 +55,15 @@ export default function ProductDetail() {
                             {data.description || "Chưa có mô tả"}
                         </p>
 
-                        <button className="mt-6 bg-[#2C8DE0] text-white px-4 py-2 rounded">
+                        <button
+                            onClick={() => addItem({
+                                productId: data.id,
+                                name: data.name,
+                                price: data.sale_price ?? data.price,
+                                image_url: data.image_url,
+                            })
+                            }
+                            className="mt-6 bg-[#2C8DE0] cursor-pointer text-white px-4 py-2 rounded">
                             Thêm vào giỏ
                         </button>
                     </div>

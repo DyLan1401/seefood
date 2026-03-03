@@ -6,9 +6,11 @@ import { Link } from "react-router-dom";
 import api from "../api/axios"
 import type { Category } from "../types/category"
 import { useQuery } from "@tanstack/react-query"
+import { useCartStore } from "../store/cartStore";
 
 export default function Header() {
     const [activeMenu, setActiveMenu] = useState<string>("");
+    const { items } = useCartStore();
 
     const toggleMenu = (menuName: string) => {
         if (activeMenu == menuName) {
@@ -96,8 +98,8 @@ export default function Header() {
                         </div>
                         {/*  */}
                         <div className="relative">
-                            <div className="flex absolute right-0 -top-2 z-50   bg-[#FF912F] rounded-full px-1">0</div>
-                            <HiOutlineShoppingCart size={30} />
+                            <div className="flex absolute right-0 -top-2 z-50   bg-[#FF912F] rounded-full px-1">{items.reduce((sum, i) => (sum + i.qty), 0)}</div>
+                            <Link to="/cart"><HiOutlineShoppingCart size={30} /></Link>
                         </div>
                     </div>
                 </div>
