@@ -104,3 +104,14 @@ export const updateOrder = async ({ id, status }) => {
     //
     return reuslt;
 };
+
+//lịch sử đơn hàng
+export const getOrdersByUserId = async (userId) => {
+    const [rows] = await pool.query(
+        'SELECT * FROM orders WHERE user_id = ? ORDER BY created_at DESC',
+        [userId]
+    );
+    return rows;
+
+
+};

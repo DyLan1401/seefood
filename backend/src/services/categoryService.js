@@ -28,3 +28,14 @@ export const getCategory = async ({ page = 1, limit = 10 }) => {
     }
   };
 };
+
+export const getCategoryDetail = async ({ slug }) => {
+  const [rows] = await pool.query(
+    `
+      SELECT id, name, slug, image_url, created_at 
+        FROM categories 
+      `,
+    [slug]
+  );
+  return rows[0];
+};

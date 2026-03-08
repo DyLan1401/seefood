@@ -16,7 +16,7 @@ export const getProducts = async (req, res) => {
         res.status(200).json(data);
         //
     } catch (error) {
-        res.status(500).json({ message: "Lỗi khi lấy dữ liệu" });
+        res.status(500).json({ error: error });
     }
 };
 
@@ -35,6 +35,25 @@ export const getProductDetail = async (req, res) => {
         res.status(200).json(data);
         //
     } catch (error) {
-        res.status(500).json({ message: "Lỗi khi lấy dữ liệu" });
+        res.status(500).json({ error: error });
+    }
+}
+
+//sản phâm thuộc danh mục
+export const getProductsByCategory = async (req, res) => {
+    try {
+        //
+        const { slug } = req.params;
+        //
+        const data = await productService.getProductsByCategory({ slug });
+        // Kiểm tra nếu không có dữ liệu trả về
+        if (!data) {
+            return res.status(404).json({ message: "Không tìm thấy sản phẩm" });
+        }
+        //
+        res.status(200).json(data);
+        //
+    } catch (error) {
+        res.status(500).json({ error: error });
     }
 }

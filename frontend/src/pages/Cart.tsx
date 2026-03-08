@@ -3,22 +3,30 @@ import { HiOutlineX } from "react-icons/hi";
 import Header from "../component/Header";
 import { Link } from "react-router-dom";
 import Footer from "../component/Footer";
+import { useAuthStore } from "../store/authStore";
 
 export default function Cart() {
-    const { items, increaseQty, decreaseQty, removeItem, getTotal } =
-        useCartStore();
-
+    const { isAuth } = useAuthStore();
+    const { items, increaseQty, decreaseQty, removeItem, getTotal } = useCartStore();
+    //
+    if (!isAuth) {
+        return <div className="p-4">
+            <p>Bạn chưa đăng nhập</p>
+            <Link
+                className=" text-blue-500"
+                to="/login">Đăng nhập Ngay</Link>
+        </div>;
+    }
+    //
     if (items.length === 0)
         return <div className="p-4">Giỏ hàng trống</div>;
 
     return (
         <div className="container mx-auto ">
-            <div>
-                <Header />
-            </div>
-            <div className=" ">
-                <div className=" flex flex-col justify-center items-center">
+            <Header />
 
+            <div className=" container mx-auto max-w-4xl">
+                <div className=" flex flex-col justify-center items-center">
                     <div className="text-center  mt-2 text-2xl font-extrabold p-2 bg-amber-500 ">Chúng tôi biết bạn có nhiều lựa chọn, cám ơn bạn đã chọn sản phẩm của chúng tôi</div>
                     <h1 className="text-2xl  text-center font-bold mb-4">Giỏ hàng</h1>
                     <p className="  text-center mb-4 p-2 border-b-5 ">Giỏ hàng có {items.length} sản phẩm</p>
@@ -30,7 +38,7 @@ export default function Cart() {
                             key={item.productId}
                             className="border rounded-2xl p-4 mb-2 flex justify-between "
                         >
-                            <div className=" ">
+                            <div className="">
                                 <div className="w-20 h-20 rounded-xl">{item.image_url ? (<img className="object-cover rounded-xl w-full h-full" src={item.image_url} />) : null}</div>
                             </div>
                             <div className="justify-center flex flex-col items-center">
@@ -85,9 +93,7 @@ export default function Cart() {
 
                 </div>
             </div>
-            <div>
-                <Footer />
-            </div>
+            <Footer />
         </div>
 
     );

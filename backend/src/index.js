@@ -11,7 +11,6 @@ import categoryRoutes from "./routes/categoryRoute.js"
 import orderRoutes from "./routes/orderRoutes.js"
 import authRoute from "./routes/authRoute.js"
 
-
 //
 const app = express();
 app.use(cors());

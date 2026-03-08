@@ -6,37 +6,36 @@ import jwt from "jsonwebtoken";
 export const Login = async (req, res) => {
     try {
         const { email, password } = req.body;
+        const user = await authService.findUserByEmail(email);
 
-        const admin = await authService.findAdminByEmail(email);
-
-        //check 
-        if (!admin) {
+        // 1. Phải check tồn tại TRƯỚC khi log hoặc so sánh pass
+        if (!user) {
             return res.status(401).json({ error: "Tài khoản không tồn tại" });
         }
 
-        //check pass
-        const isMatch = await bcrypt.compare(password, admin.password);
+        // 2. Bây giờ admin đã chắc chắn tồn tại, mới log được
+        console.log("Mật khẩu từ DB:", user.password);
+
+        const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) {
             return res.status(401).json({ error: "Mật khẩu không chính xác" });
         }
 
-        // 3. Tạo JWT Token
+        // Tạo token (Phần này bạn làm đúng rồi, có chứa id)
         const token = jwt.sign(
-            { id: admin.id, email: admin.email },
+            { id: user.id, email: user.email },
             process.env.JWT_SECRET,
             { expiresIn: "7d" }
         );
 
-        // 4. Trả về kết quả duy nhất
         return res.status(200).json({
             message: "Đăng nhập thành công",
             token,
-            admin: { id: admin.id, email: admin.email },
+            user: { id: user.id, email: user.email },
         });
-
     } catch (error) {
         console.error("Login Error:", error);
-        return res.status(500).json({ message: "Lỗi hệ thống khi đăng nhập" });
+        return res.status(500).json({ error: error.message });
     }
 };
 
@@ -52,8 +51,8 @@ export const Register = async (req, res) => {
         }
 
         //check email bằng bằng Login 
-        const existingAdmin = await authService.findAdminByEmail(email);
-        if (existingAdmin) {
+        const existingUser = await authService.findUserByEmail(email);
+        if (existingUser) {
             return res.status(409).json({ message: "Email này đã được sử dụng" });
         }
 
@@ -66,7 +65,7 @@ export const Register = async (req, res) => {
         //
         return res.status(201).json({
             message: "Đăng ký thành công",
-            adminId: data.insertId
+            userId: data.insertId
         });
 
     } catch (error) {

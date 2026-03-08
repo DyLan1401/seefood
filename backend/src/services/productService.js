@@ -61,5 +61,18 @@ export const getProductDetail = async ({ slug }) => {
   return rows[0];
 };
 
+//lấy sản phẩm thuộc danh mục
+export const getProductsByCategory = async ({ slug }) => {
+  const [rows] = await pool.query(
+    `SELECT p.* FROM products p 
+             JOIN categories c ON p.category_id = c.id 
+             WHERE c.slug = ?`,
+    [slug]
+  );
+  return rows;
+};
+
+
+
 
 
