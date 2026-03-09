@@ -33,7 +33,9 @@ app.use("/api/order", orderRoutes);
 app.use("/api/user", authRoute);
 
 
-
+app.get('/health', (req, res) => {
+    res.json({ status: 'ok' });
+});
 
 //lắng nghe PORT
 const PORT = process.env.PORT || 5000;
