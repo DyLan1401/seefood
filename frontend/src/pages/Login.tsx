@@ -17,12 +17,18 @@ export default function Login() {
 
     const handleLogin = async () => {
         try {
-            const res = await api.post("/admin/login", { email, password });
+            const res = await api.post("/user/login", { email, password });
+            console.log(res.data.user); // 👈 kiểm tra role có trả về không
 
             // Lưu Token và thông tin Admin vào Zustand
             setLogin(res.data.token, res.data.user);
             show("Đăng nhập thành công!", "success");
-            navigate("/");
+
+            if (res.data.user.role === "admin") {
+                navigate("/dashboard");
+            } else {
+                navigate("/");
+            }
         } catch (err: unknown) {
             show("Sai tài khoản hoặc mật khẩu", "error");
         }

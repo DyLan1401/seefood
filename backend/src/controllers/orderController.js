@@ -63,7 +63,7 @@ export const updateOrder = async (req, res) => {
         const { id } = req.params;
         const { status } = req.body;
         //
-        const data = await orderService.updateOrder({ id, status });
+        const data = await orderService.updateOrder(id, status);
         //Kiểm tra nếu không có dữ liệu trả về
         if (!data) {
             return res.status(404).json({ message: "Không tìm thấy đơn hàng để cập nhật" });

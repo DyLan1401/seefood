@@ -15,13 +15,13 @@ export default function Register() {
     const handleSubmit = async () => {
         // Logic kiểm tra đầu vào giữ nguyên
         if (!email || !password) {
-            alert("Vui lòng nhập đầy đủ Email và Mật khẩu!");
+            show("Vui lòng nhập đầy đủ Email và Mật khẩu!", "error");
             return;
         }
 
         try {
             // Logic gửi API giữ nguyên
-            const res = await api.post("/admin/register", {
+            const res = await api.post("/user/register", {
                 email,
                 password
             });

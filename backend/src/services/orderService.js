@@ -86,7 +86,7 @@ export const getOrderDetail = async ({ id }) => {
 };
 
 //cập nhật đơn hàng
-export const updateOrder = async ({ id, status }) => {
+export const updateOrder = async (id, status) => {
     //
     const allowed = ["pending", "confirmed", "shipping", "done", "canceled"];
     //

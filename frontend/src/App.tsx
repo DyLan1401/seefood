@@ -11,6 +11,7 @@ import CategoryDetail from './pages/CategoryDetail'
 import Categories from './pages/Categories'
 import UserOrders from './pages/UserOrders'
 import Error404 from './pages/error404'
+import Dashboard from './pages/Dashboard'
 function App() {
 
   return (
@@ -24,6 +25,7 @@ function App() {
       <Route path="/product/category/:slug" element={<CategoryDetail />} />
       <Route path='/categories' element={<Categories />} />
       <Route path='/my-orders' element={<UserOrders />} />
+      <Route path='/dashboard' element={<Dashboard />} />
 
       <Route path="*" element={<Error404 />} />
     </Routes>

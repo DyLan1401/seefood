@@ -4,7 +4,8 @@ import { persist } from "zustand/middleware";
 
 export type User = {
     id: number | string;
-    email: string
+    email: string;
+    role: string;
 
 };
 export const useAuthStore = create()(

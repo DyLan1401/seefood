@@ -2,8 +2,13 @@ import { useQuery } from "@tanstack/react-query";
 import api from "../api/axios";
 import Header from "../component/Header";
 import Footer from "../component/Footer";
-import type { Order } from "../types/order";
 export default function MyOrders() {
+
+    type Order = {
+        id: number
+        created_at: string;
+        total: number
+    }
     const { data: orders, isError, isLoading } = useQuery({
         queryKey: ['my-orders'],
         queryFn: async () => {

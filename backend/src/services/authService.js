@@ -3,7 +3,7 @@ import pool from "../utils/db.js";
 //tìm email trong bẳng users
 export const findUserByEmail = async (email) => {
     const [rows] = await pool.query(
-        `SELECT id, email, password FROM users WHERE email = ? LIMIT 1`,
+        `SELECT id, email, password ,role FROM users WHERE email = ? LIMIT 1`,
         [email]
     );
     return rows[0];

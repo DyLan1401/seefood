@@ -23,7 +23,7 @@ export const Login = async (req, res) => {
 
         // Tạo token (Phần này bạn làm đúng rồi, có chứa id)
         const token = jwt.sign(
-            { id: user.id, email: user.email },
+            { id: user.id, email: user.email, role: user.role },
             process.env.JWT_SECRET,
             { expiresIn: "7d" }
         );
@@ -31,13 +31,15 @@ export const Login = async (req, res) => {
         return res.status(200).json({
             message: "Đăng nhập thành công",
             token,
-            user: { id: user.id, email: user.email },
+            user: { id: user.id, email: user.email, role: user.role },
         });
     } catch (error) {
         console.error("Login Error:", error);
         return res.status(500).json({ error: error.message });
     }
 };
+
+
 
 //đăng kí
 export const Register = async (req, res) => {
