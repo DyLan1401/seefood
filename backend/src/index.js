@@ -16,6 +16,7 @@ const app = express();
 app.use(cors({
     origin: [
         'https://seafood-liard.vercel.app/',
+        'https://seafood-git-main-nlan4670-1022s-projects.vercel.app/',
         'http://localhost:5173'
     ],
     credentials: true,
