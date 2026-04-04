@@ -7,7 +7,6 @@ const router = Router();
 router.get("/all", getAllOrders);
 router.get('/my-orders', verifyToken, getMyOrders);
 router.get("/:id", getOrderDetail);
-
 router.post("/create", verifyToken, createOrder);
 router.patch("/:id/status", updateOrder);
 export default router;      

@@ -31,11 +31,8 @@ export const getCategory = async ({ page = 1, limit = 10 }) => {
 
 export const getCategoryDetail = async ({ slug }) => {
   const [rows] = await pool.query(
-    `
-      SELECT id, name, slug, image_url, created_at 
-        FROM categories 
-      `,
-    [slug]
+    `SELECT id, name, slug, image_url, created_at FROM categories`
+    , [slug]
   );
   return rows[0];
 };
@@ -50,7 +47,12 @@ export const createCategory = async ({ name, slug, image_url }) => {
 
 export const UpdateCategory = async ({ id, name, slug, image_url }) => {
   const [rows] = await pool.query(
-    `UPDATE categories SET name = ?, slug = ?, image_url = ?, created_at = now() WHERE id = ? `
+    `UPDATE categories SET
+     name = ?,
+    slug = ?,
+    image_url = ?,
+    created_at = now()
+    WHERE id = ? `
     , [name, slug, image_url, id]
   );
   return rows;
@@ -58,8 +60,8 @@ export const UpdateCategory = async ({ id, name, slug, image_url }) => {
 
 export const DeleteCategory = async ({ id }) => {
   const [rows] = await pool.query(
-    `DELETE FROM category WHERE id = ?`,
-    [id]
+    `DELETE FROM categories WHERE id = ?`
+    , [id]
   );
   return rows;
 
