@@ -12,6 +12,8 @@ export default function MyOrders() {
 
 
 
+    const myOrders = Array.isArray(userOrder) ? userOrder : (userOrder?.data || []);
+
     // Trạng thái đang tải
     if (isLoadingUserOrder) return <div className="p-10 text-center animate-pulse">Đang tải đơn hàng...</div>;
 
@@ -38,7 +40,7 @@ export default function MyOrders() {
 
                 {/* thông tin đơn hàng*/}
                 <div className="grid grid-cols-1 gap-4">
-                    {userOrder.map((order: Order) => (
+                    {myOrders.map((order: Order) => (
                         <div
                             key={order.id}
                             className="bg-white border border-gray-100 rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow duration-200 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4"

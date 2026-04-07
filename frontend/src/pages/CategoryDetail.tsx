@@ -19,10 +19,10 @@ export default function CategoryDetail() {
     const { slug } = useParams();
 
     //lấy data từ hook
-    const { productByCategory, isLoadingProductByCategory, isErrorProductByCategory } = useProduct(slug);
+    const { productByCategory, isLoadingProductByCategory, isErrorProductByCategory } = useProduct(undefined, slug);
 
     //kiểm tra data
-    const ListProductByCategory = productByCategory.data || [];
+    const ListProductByCategory = productByCategory?.data || [];
 
     //loading
     if (isLoadingProductByCategory) return <div className="flex justify-center items-center h-screen font-semibold text-gray-500">Đang tải sản phẩm...</div>;

@@ -24,7 +24,7 @@ export const useUsers = (userId?: string) => {
     // 3. ĐĂNG KÝ
     const registerMutation = useMutation({
 
-        mutationFn: ({ email, password }: any) => api.fetchRegister(email, password),
+        mutationFn: ({ email, password }: { email: string, password: string }) => api.fetchRegister(email, password),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['users'] });
         },
@@ -35,7 +35,7 @@ export const useUsers = (userId?: string) => {
 
     // 4. ĐĂNG NHẬP
     const loginMutation = useMutation({
-        mutationFn: ({ email, password }: any) => api.fetchLogin(email, password),
+        mutationFn: ({ email, password }: { email: string, password: string }) => api.fetchLogin(email, password),
         onSuccess: (data) => {
             if (data?.token) {
                 // GỌI HÀM LOGIC TRONG AUTHSTORE CỦA BẠN TẠI ĐÂY

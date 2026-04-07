@@ -6,8 +6,8 @@ export const fetchOrderList = async () => {
     return res.data;
 };
 
-export const fetchOrderDetail = async (orderId: string) => {
-    const { data } = await api.get(`/order/${orderId}`);
+export const fetchOrderDetail = async (id: string) => {
+    const { data } = await api.get(`/order/${id}`);
     return data;
 };
 

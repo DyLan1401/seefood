@@ -19,11 +19,12 @@ export const useOrders = (id?: string) => {
         staleTime: 10 * 60 * 1000
     });
     const userOrderQuery = useQuery({
-        queryKey: ["my - orders"],
+        queryKey: ["my-orders"],
         queryFn: api.fetchUSerOrder,
         select: (data) => data?.items || data || [],
-
-    })
+        retry: 0
+    }
+    )
     // 3. TẠO ĐƠN HÀNG (Dùng cho Checkout)
     const createMutation = useMutation({
         mutationFn: api.fetchCreateOrder,

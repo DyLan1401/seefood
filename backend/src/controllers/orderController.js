@@ -80,18 +80,22 @@ export const updateOrder = async (req, res) => {
 //lịch sử đơn hàng
 export const getMyOrders = async (req, res) => {
     try {
+        console.log("req.user:", req.user); // xem object có gì
         const userId = req.user?.id;
+        console.log("userId:", userId);
 
         if (!userId) {
             return res.status(401).json({ message: "Không tìm thấy thông tin người dùng" });
         }
 
-        const data = await orderService.getOrdersByUserId({ id });
+        const data = await orderService.getOrdersByUserId({ userId });
 
         res.status(200).json(data || []);
     } catch (error) {
+        console.error("Error:", error); // ← xem full error stack
+
         res.status(500).json({
-            message: "Đã xảy ra lỗi hệ thống",
+            message: "Đã xảy ra lỗi hệ thống ",
             error: error.message
         })
     }

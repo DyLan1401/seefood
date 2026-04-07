@@ -16,10 +16,10 @@ import { useToastStore } from "../store/useToastStore";
 
 export default function ProductDetail() {
     //lấy id từ url
-    const { id } = useParams();
+    const { slug } = useParams();
     const addItem = useCartStore((s) => s.addItem);
     const showToast = useToastStore((state) => state.show);
-    const { productDetail, isLoadingDetail, isErrorDetail } = useProduct(id);
+    const { productDetail, isLoadingDetail, isErrorDetail } = useProduct(slug);
 
     //thêm vào giỏ hàng
     const handleAddtoCart = () => {

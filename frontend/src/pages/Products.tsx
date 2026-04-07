@@ -63,7 +63,7 @@ export default function Products() {
                         filteredProducts.map((p: Product) => (
                             <Link
                                 key={p.id}
-                                to={`/product/${p.id}`}
+                                to={`/product/${p.slug}`}
                                 className="w-full  flex justify-center hover:scale-[1.02] transition-transform"
                             >
                                 <ProductCard

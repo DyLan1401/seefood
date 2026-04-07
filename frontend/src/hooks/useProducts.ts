@@ -9,6 +9,16 @@ export const useProduct = (id?: string, slug?: string) => {
         queryFn: api.fetchProductList,
     });
 
+    const listProductByCategory = useQuery({
+        queryKey: ["product-by-category", slug],
+        queryFn: () => api.fetchProductByCategory(slug!),
+        enabled: !!slug,
+        staleTime: 10 * 60 * 1000
+
+    });
+
+
+
     const detailQuery = useQuery({
         queryKey: ["products", "detail", id],
         queryFn: () => api.fetchProductDetail(id!),
@@ -32,14 +42,6 @@ export const useProduct = (id?: string, slug?: string) => {
             queryClient.invalidateQueries({ queryKey: ["products"] });
         }
     });
-    const listProductByCategory = useQuery({
-        queryKey: ["product-by-category", slug],
-        queryFn: () => api.fetchProductByCategory(slug!),
-        enabled: !!slug,
-        staleTime: 10 * 60 * 1000
-
-    });
-
     return {
 
         // Data

@@ -112,8 +112,6 @@ export const getOrdersByUserId = async ({ userId }) => {
         [userId]
     );
     return rows;
-
-
 };
 
 //xóa đơn hàng
