@@ -1,4 +1,4 @@
-const cloudinary = require('cloudinary').v2;
+import { v2 as cloudinary } from 'cloudinary';
 
 // Lấy các thông số này trên tài khoản Cloudinary của bạn
 cloudinary.config({
@@ -7,4 +7,4 @@ cloudinary.config({
     api_secret: 'IkSF64enLfeXg-nwql3t2giqRCU'
 });
 
-module.exports = cloudinary;
+export default cloudinary;
