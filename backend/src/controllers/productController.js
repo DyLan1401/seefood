@@ -101,7 +101,7 @@ export const updateProduct = async (req, res) => {
 
         const data = await productService.updateProduct({ id, name, slug, price, sale_price, stock, image_url, description, origin, weight, category_id });
 
-        if (data) {
+        if (!data) {
             return res.status(404).json({
                 message: `Không thể cập nhật sản phẩm id: ${id} `,
             });

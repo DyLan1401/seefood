@@ -10,6 +10,8 @@ import {
 import { useToastStore } from "../store/useToastStore";
 import { useProduct } from "../hooks/useProducts";
 import type { Product } from "../types/product";
+import { useCategory } from "../hooks/useCategory";
+import type { Category } from "../types/category";
 
 
 interface ProductFormProps {
@@ -22,6 +24,9 @@ export default function ProductModal({ isOpen, onClose, initialData }: ProductFo
     const showToast = useToastStore((state) => state.show);
     const isEdit = !!initialData;
 
+    const { categories } = useCategory();
+
+    const categoryList = categories?.items || [];
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const [previewUrl, setPreviewUrl] = useState<string>(initialData?.image_url || "");
     const {
@@ -240,6 +245,22 @@ export default function ProductModal({ isOpen, onClose, initialData }: ProductFo
                             <label className="text-sm font-bold text-gray-700 flex items-center gap-2"><Weight size={14} /> Trọng lượng</label>
                             <input {...register("weight")} className="w-full px-4 py-3 border border-gray-200 rounded-xl outline-none" />
                         </div>
+                    </div>
+
+                    <div className="space-y-2">
+                        <label className="text-sm font-bold text-gray-700">Danh mục <span className="text-red-500">*</span></label>
+                        <select
+                            {...register("category_id", { required: "Vui lòng chọn danh mục" })}
+                            className="w-full px-4 py-3 border border-gray-200 rounded-xl outline-none"
+                        >
+                            <option value="">-- Chọn danh mục --</option>
+                            {categoryList?.map((cat: Category) => (
+                                <option key={cat.id} value={cat.id}>
+                                    {cat.name}
+                                </option>
+                            ))}
+                        </select>
+                        {errors.category_id && <p className="text-red-500 text-xs">{errors.category_id.message}</p>}
                     </div>
 
                     <div className="space-y-2">

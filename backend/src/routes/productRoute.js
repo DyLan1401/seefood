@@ -10,10 +10,11 @@ router.get("/all", getProducts);
 
 //router action
 router.post("/create", createProduct);
-router.post('/upload-image', upload.single('image'), uploadFile);
 router.put("/update/:id", updateProduct);
 router.delete("/delete/:id", deleteProduct);
 //
 router.get("/category/:slug", getProductsByCategory);
+router.post('/upload-image', upload.single('image'), uploadFile);
+
 router.get("/:id", getProductDetail);
 export default router;
