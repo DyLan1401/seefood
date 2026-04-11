@@ -27,10 +27,10 @@ export const useCartStore = create<CartState>()(
             items: [],
 
             addItem: (item) => {
-                const extsting = get().items.find(
+                const existing = get().items.find(
                     (i) => i.productId === item.productId
                 );
-                if (extsting) {
+                if (existing) {
                     set({
                         items: get().items.map((i) => i.productId === item.productId
                             ? { ...i, qty: i.qty + 1 }

@@ -6,16 +6,16 @@ import ProductDetail from './pages/ProductDetail'
 import Cart from './pages/Cart'
 import Checkout from './pages/Checkout'
 import Login from './pages/Login'
-import Resigter from './pages/Register'
+import Register from './pages/Register'
 import CategoryDetail from './pages/CategoryDetail'
 import Categories from './pages/Categories'
 import UserOrders from './pages/UserOrders'
-import Error404 from './pages/error404'
+import Error404 from './pages/Error404'
 import DashboardOverview from './pages/admin/DashboardOverview'
 import { ToastContainer } from './component/ToastContainer'
 import OrderDetail from './pages/OrderDetail'
 
-import AdminLayout from './component/admin/adminLayout'
+import AdminLayout from './component/admin/AdminLayout'
 import AdminProducts from './pages/admin/AdminProduct'
 import AdminOrders from './pages/admin/AdminOrders'
 import AdminCategories from './pages/admin/AdminCategories'
@@ -32,7 +32,7 @@ function App() {
         <Route path='/products' element={<Products />} />
         <Route path="/product/:id" element={<ProductDetail />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Resigter />} />
+        <Route path="/register" element={<Register />} />
         <Route path="/product/category/:slug" element={<CategoryDetail />} />
         <Route path='/categories' element={<Categories />} />
 

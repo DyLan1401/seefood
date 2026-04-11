@@ -1,6 +1,8 @@
 //lib
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import { checkoutSchema, type CheckoutFormData } from "../lib/validations";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 //components
 import Header from "../component/Header";
@@ -17,7 +19,7 @@ import { useToastStore } from "../store/useToastStore";
 
 //types
 import type { AxiosError } from "axios";
-import type { CreateOrderPayload, CheckoutFormData } from "../types/order";
+import type { CreateOrderPayload, CreateOrderItem } from "../types/order";
 
 
 export default function Checkout() {
@@ -31,19 +33,17 @@ export default function Checkout() {
 
 
 
-    // Khởi tạo React Hook Form
-    const {
-        register,
-        handleSubmit,
-        formState: { errors },
-    } = useForm<CheckoutFormData>({
-        defaultValues: {
-            customerName: user?.username || "",
-            phone: "",
-            address: "",
-            note: ""
-        }
-    });
+    const { register, handleSubmit, formState: { errors } } =
+        useForm<CheckoutFormData>({
+            resolver: zodResolver(checkoutSchema),  // thêm dòng này
+            defaultValues: {
+                customerName: user?.email || "",
+                phone: "",
+                address: "",
+                note: "",
+            },
+        });
+
     const handleOrder = async (data: CheckoutFormData) => {
         // kiểm tra user
         if (!isAuth) return showToast("Vui lòng đăng nhập để đặt hàng!", "error");
@@ -54,7 +54,7 @@ export default function Checkout() {
             const orderPayload: CreateOrderPayload = {
                 userId: user?.id as string | number,
                 ...data,
-                items: items.map(i => ({
+                items: items.map((i): CreateOrderItem => ({
                     productId: i.productId,
                     qty: i.qty
 
@@ -93,7 +93,7 @@ export default function Checkout() {
                                 <input
                                     placeholder="Nguyễn Văn A"
                                     className="border border-gray-300 rounded-xl p-3 focus:ring-2 focus:ring-[#2C8DE0] outline-none transition-all"
-                                    {...register("customerName", { required: "*Bắt buộc*" })}
+                                    {...register("customerName")}
                                 />
                                 {errors.customerName && <span className="error text-red-500">{errors.customerName.message as string}</span>}
 
@@ -103,12 +103,7 @@ export default function Checkout() {
                                 <input
                                     placeholder="09xxx..."
                                     className="border border-gray-300 rounded-xl p-3 focus:ring-2 focus:ring-[#2C8DE0] outline-none transition-all"
-                                    {...register("phone", {
-                                        required: "*Bắt buộc*", pattern: {
-                                            value: /^(0[3|5|7|8|9])[0-9]{8}$/,
-                                            message: "Số điện thoại không đúng định dạng (VD: 0912345678)"
-                                        }
-                                    })}
+                                    {...register("phone")}
                                 />
                                 {errors.phone && <span className="error text-red-500">{errors.phone.message as string}</span>}
 
@@ -120,7 +115,7 @@ export default function Checkout() {
                             <input
                                 placeholder="Số nhà, tên đường, phường/xã..."
                                 className="border border-gray-300 rounded-xl p-3 focus:ring-2 focus:ring-[#2C8DE0] outline-none transition-all"
-                                {...register("address", { required: "*Bắt buộc*" })}
+                                {...register("address")}
                             />
                             {errors.address && <span className="error text-red-500">{errors.address.message as string}</span>}
 

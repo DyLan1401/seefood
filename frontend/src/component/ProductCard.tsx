@@ -26,7 +26,7 @@ export default function ProductCard({ image_url, name, sale_price, price }: Prod
 
             {/*  */}
             <button className="bg-[#2C8DE0] text-white font-extrabold p-2 px-6 rounded-xl hover:bg-[#1a6fb8] transition-colors w-full md:w-auto text-sm">
-                Mua
+                Chi tiết
             </button>
         </div>
     )

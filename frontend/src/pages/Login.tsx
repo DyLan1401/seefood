@@ -1,9 +1,8 @@
 //lib
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { userInput } from "../lib/validitions";
+import { loginSchema, type LoginFormData } from "../lib/validations";
 import { zodResolver } from "@hookform/resolvers/zod"; // Thêm dòng này
-import { z } from "zod"; // Đảm bảo đã import zod
 
 //components
 import Header from "../component/Header";
@@ -15,7 +14,6 @@ import { useToastStore } from "../store/useToastStore";
 
 //types
 import type { AxiosError } from "axios";
-type LoginFormInput = z.infer<typeof userInput>;
 
 
 export default function Login() {
@@ -27,8 +25,8 @@ export default function Login() {
     const { register,
         handleSubmit,
         formState: { errors } } =
-        useForm<LoginFormInput>({
-            resolver: zodResolver(userInput),
+        useForm<LoginFormData>({
+            resolver: zodResolver(loginSchema),
             defaultValues: {
                 email: "",
                 password: ""
@@ -36,7 +34,7 @@ export default function Login() {
         });
 
     //hàm đăng nhập
-    const handleLogin = (data: LoginFormInput) => {
+    const handleLogin = (data: LoginFormData) => {
         login(data, {
             onSuccess: (res) => {
                 showToast("Đăng nhập thành công!", "success");

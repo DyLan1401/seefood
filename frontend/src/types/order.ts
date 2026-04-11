@@ -35,12 +35,8 @@ export interface OrderDetailData {
 }
 
 
-
-
-
-
 //sản phẩm trong đơn hàng
-export interface OrderItem {
+export interface CreateOrderItem {
     productId: string | number;
     qty: number;
 }
@@ -52,14 +48,7 @@ export interface CreateOrderPayload {
     phone: string;
     address: string;
     note?: string;
-    items: OrderItem[];
-}
-//Chẹckout
-export interface CheckoutFormData {
-    customerName: string;
-    phone: string;
-    address: string;
-    note?: string;
+    items: CreateOrderItem[];
 }
 
 

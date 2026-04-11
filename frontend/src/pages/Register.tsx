@@ -1,8 +1,7 @@
 //lib
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { userInput } from "../lib/validitions";
-import { z } from "zod";
+import { registerSchema, type RegisterFormData } from "../lib/validations";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 //components
@@ -15,7 +14,6 @@ import { useToastStore } from "../store/useToastStore";
 
 //types
 import type { AxiosError } from "axios";
-type RegisterFormInput = z.infer<typeof userInput>;
 
 export default function Register() {
 
@@ -28,8 +26,8 @@ export default function Register() {
     const { register,
         handleSubmit,
         formState: { errors } } =
-        useForm<RegisterFormInput>({
-            resolver: zodResolver(userInput),
+        useForm<RegisterFormData>({
+            resolver: zodResolver(registerSchema),
             defaultValues: {
                 email: "",
                 password: ""
@@ -37,7 +35,7 @@ export default function Register() {
         });
 
     //hàm đăng kí
-    const handleRegister = (data: RegisterFormInput) => {
+    const handleRegister = (data: RegisterFormData) => {
         Register(data, {
             //đăng kí thành công
             onSuccess: () => {
