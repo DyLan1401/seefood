@@ -5,7 +5,7 @@ import { verifyToken } from '../middleware/auth.middleware.js';
 const router = Router();
 
 //router tĩnh
-router.get("/all", verifyToken, getAllOrders);
+router.get("/all", getAllOrders);
 router.get('/my-orders', verifyToken, getMyOrders);
 
 //router action

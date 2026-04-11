@@ -6,7 +6,7 @@ import { verifyToken } from '../middleware/auth.middleware.js';
 const router = Router();
 
 //route tĩnh
-router.get("/all", verifyToken, userList);
+router.get("/all", userList);
 
 //route action
 router.post("/login", Login);

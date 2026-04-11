@@ -8,7 +8,7 @@ const upload = multer({ dest: 'uploads/' });
 
 
 //router tĩnh
-router.get("/all", verifyToken, getAllCategory);
+router.get("/all", getAllCategory);
 
 //router action
 router.post("/create", verifyToken, AddCategory);

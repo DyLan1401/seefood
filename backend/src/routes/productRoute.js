@@ -7,7 +7,7 @@ const router = Router();
 const upload = multer({ dest: 'uploads/' });
 
 //router tĩnh
-router.get("/all", verifyToken, getProducts);
+router.get("/all", getProducts);
 
 //router action
 router.post("/create", verifyToken, createProduct);
