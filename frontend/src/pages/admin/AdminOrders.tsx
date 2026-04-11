@@ -5,10 +5,12 @@ import { Trash2, ClipboardList, User2, MapPin, Calendar, Hash } from 'lucide-rea
 import { useToastStore } from "../../store/useToastStore";
 
 //hooks
-import { useOrders } from "../../hooks/useOrder";
+import { useOrderList } from "../../hooks/order/useOrderList";
+import { useOrderMutations } from "../../hooks/order/useOrderMutation";
 
 //types
 import type { Order } from "../../types/order";
+import { TableRowSkeleton } from '../../component/Skeleton';
 const STATUS_LABEL: Record<string, string> = {
     pending: "Chờ xác nhận", confirmed: "Đã xác nhận", shipping: "Đang giao", done: "Đã giao", canceled: "Đã hủy",
 };
@@ -24,14 +26,13 @@ const STATUS_COLOR: Record<string, string> = {
 export default function AdminOrders() {
     const showToast = useToastStore((state) => state.show);
 
+    const { orders, isLoading } = useOrderList();
     const {
-        orders,
         updateOrder,
         deleteOrder,
-        isLoadingOrder,
         isUpdating,
         isDeleting
-    } = useOrders();
+    } = useOrderMutations();
 
     return (
         <div className="p-6 bg-gray-50 min-h-screen">
@@ -41,11 +42,14 @@ export default function AdminOrders() {
                 <p className="text-sm text-gray-500 font-medium">Theo dõi doanh thu và tiến độ xử lý đơn hàng Seefood</p>
             </div>
 
-            {isLoadingOrder ? (
-                <div className="flex flex-col items-center justify-center h-64 bg-white rounded-3xl border border-dashed border-gray-200">
-                    <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-600 mb-4"></div>
-                    <p className="text-gray-400 font-medium">Đang đồng bộ đơn hàng...</p>
-                </div>
+            {isLoading ? (
+                <table className="w-full">
+                    <tbody>
+                        {Array.from({ length: 5 }).map((_, i) => (
+                            <TableRowSkeleton key={i} cols={5} />
+                        ))}
+                    </tbody>
+                </table>
             ) : orders.length === 0 ? (
                 <div className="text-center py-20 bg-white rounded-3xl border border-gray-100 shadow-sm">
                     <ClipboardList size={48} className="mx-auto text-gray-200 mb-4" />

@@ -4,14 +4,14 @@ import { useParams } from "react-router-dom";
 //components
 import Header from "../component/Header";
 import Footer from "../component/Footer";
+import { ProductDetailSkeleton } from "../component/Skeleton";
 
 //hooks
-import { useProduct } from "../hooks/useProducts";
+import { useProductDetail } from "../hooks/product/useProductDetail";
 
 //zustand
 import { useCartStore } from "../store/cartStore";
 import { useToastStore } from "../store/useToastStore";
-
 
 
 export default function ProductDetail() {
@@ -19,26 +19,36 @@ export default function ProductDetail() {
     const { id } = useParams();
     const addItem = useCartStore((s) => s.addItem);
     const showToast = useToastStore((state) => state.show);
-    const { productDetail, isLoadingDetail, isErrorDetail } = useProduct(id, undefined);
+    const { product, isLoading, isError } = useProductDetail(id);
 
     //thêm vào giỏ hàng
     const handleAddtoCart = () => {
-        if (!productDetail) return;
+        if (!product) return;
 
         addItem({
-            productId: productDetail.id,
-            name: productDetail.name,
-            price: productDetail.sale_price ?? productDetail.price,
-            image_url: productDetail.image_url,
+            productId: product.id,
+            name: product.name,
+            price: product.sale_price ?? product.price,
+            image_url: product.image_url,
         });
-        showToast(`Đã thêm ${productDetail.name} vào giỏ hàng!`, "success");
+        showToast(`Đã thêm ${product.name} vào giỏ hàng!`, "success");
     }
 
     //loading
-    if (isLoadingDetail) return <div className="flex justify-center items-center h-screen font-semibold">Đang tải...</div>;
-    //error
-    if (isErrorDetail && !productDetail) return <div className="p-4 text-center text-red-500">Không thể tải thông tin sản phẩm</div>;
-
+    if (isLoading) return (
+        <>
+            <Header />
+            <ProductDetailSkeleton />
+            <Footer />
+        </>
+    );    //error
+    if (isError) return (
+        <>
+            <Header />
+            <div className="text-center">không tìm thấy sản phẩm</div>
+            <Footer />
+        </>
+    );
     return (
         < >
             < Header />
@@ -49,10 +59,10 @@ export default function ProductDetail() {
 
                     {/*hiển thị chi tiết sản phẩm  */}
                     <div className="bg-gray-100 rounded-2xl overflow-hidden shadow-sm">
-                        {productDetail.image_url ? (
+                        {product.image_url ? (
                             <img
-                                src={productDetail.image_url}
-                                alt={productDetail.name}
+                                src={product.image_url}
+                                alt={product.name}
                                 className="w-full h-80 sm:h-96 md:h-125 lg:h-140 object-cover"
                             />
                         ) : (
@@ -65,22 +75,22 @@ export default function ProductDetail() {
                     {/* thông tin sản phẩm */}
                     <div className="flex flex-col justify-center space-y-4">
                         <h1 className="text-2xl md:text-4xl font-bold text-gray-900 leading-tight">
-                            {productDetail.name}
+                            {product.name}
                         </h1>
 
                         <div className="text-xl md:text-2xl">
-                            {productDetail.sale_price ? (
+                            {product.sale_price ? (
                                 <div className="flex items-center gap-3">
                                     <span className="font-bold text-[#BF4E2C]">
-                                        {productDetail.sale_price.toLocaleString()}đ
+                                        {product.sale_price.toLocaleString()}đ
                                     </span>
                                     <span className="line-through text-gray-400 text-lg">
-                                        {productDetail.price.toLocaleString()}đ
+                                        {product.price.toLocaleString()}đ
                                     </span>
                                 </div>
                             ) : (
                                 <span className="font-bold text-[#2C8DE0]">
-                                    {productDetail.price.toLocaleString()}đ
+                                    {product.price.toLocaleString()}đ
                                 </span>
                             )}
                         </div>
@@ -89,7 +99,7 @@ export default function ProductDetail() {
                         <div className="border-t border-gray-100 pt-4">
                             <h3 className="font-semibold mb-2 text-gray-800">Mô tả sản phẩm:</h3>
                             <p className="text-gray-600 text-sm md:text-base leading-relaxed whitespace-pre-line max-w-prose">
-                                {productDetail.description || "Chưa có mô tả chi tiết cho sản phẩm này."}
+                                {product.description || "Chưa có mô tả chi tiết cho sản phẩm này."}
                             </p>
                         </div>
 

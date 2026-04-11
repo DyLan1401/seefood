@@ -7,7 +7,7 @@ import Header from "../component/Header";
 import CategoryCard from "../component/CategoryCard";
 
 //hooks
-import { useCategory } from "../hooks/useCategory";
+import { useCategoryList } from "../hooks/category/useCategoryList";
 
 //types
 import type { Category } from "../types/category";
@@ -16,21 +16,21 @@ import type { Category } from "../types/category";
 export default function Categories() {
 
     // gọi biến từ hook
-    const { categories, isLoadingCategory, isErrorCategory } = useCategory();
+    const { categories, isLoading: isLoadingCategories, isError: isErrorCategories } = useCategoryList();
     //
 
     //kiểm tra data
     const categoryList = categories?.items || [];
 
     //loading
-    if (isLoadingCategory) return (
+    if (isLoadingCategories) return (
         <div className="flex justify-center items-center h-screen animate-pulse font-semibold text-gray-500">
             Đang tải danh mục...
         </div>
     );
 
     //error
-    if (isErrorCategory) return (
+    if (isErrorCategories) return (
         <div className="text-center py-20 text-red-500 font-bold">
             Lỗi tải dữ liệu, vui lòng thử lại sau!
         </div>
@@ -55,6 +55,7 @@ export default function Categories() {
                             className="w-full flex justify-center transition-transform duration-200 hover:scale-[1.02]"
                         >
                             <CategoryCard
+                                id={c.id}
                                 name={c.name}
                                 image_url={c.image_url}
                                 slug={c.slug}

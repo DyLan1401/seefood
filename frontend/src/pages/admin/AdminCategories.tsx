@@ -4,12 +4,15 @@ import { Trash2, SquarePen, ImageIcon, Plus } from 'lucide-react';
 
 //components
 import CategoryModal from "../../component/CategoryModal";
+import { TableRowSkeleton } from "../../component/Skeleton";
 
 //zustands
 import { useToastStore } from "../../store/useToastStore";
 
 //hooks
-import { useCategory } from "../../hooks/useCategory";
+import { useCategoryList } from "../../hooks/category/useCategoryList";
+import { useCategoryMutations } from '../../hooks/category/useCategoryMutation';
+
 
 //types
 import type { Category } from "../../types/category";
@@ -21,14 +24,9 @@ export default function AdminCategories() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
 
+    const { categories, isLoading, } = useCategoryList();
+    const { deleteCategory, isDeleting, isUpdating } = useCategoryMutations();
 
-    const {
-        categories,
-        deleteCategory,
-        isLoadingCategory,
-        isUpdating,
-        isDeleting
-    } = useCategory();
     const categoryList = categories?.items || [];
 
     const handleEdit = (category: Category) => {
@@ -58,11 +56,14 @@ export default function AdminCategories() {
             </div>
 
             {/* List Section */}
-            {isLoadingCategory ? (
-                <div className="flex flex-col items-center justify-center h-64 bg-white rounded-3xl border border-dashed border-gray-200">
-                    <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-600 mb-4"></div>
-                    <p className="text-gray-400 font-medium">Đang tải danh sách...</p>
-                </div>
+            {isLoading ? (
+                <table className="w-full">
+                    <tbody>
+                        {Array.from({ length: 5 }).map((_, i) => (
+                            <TableRowSkeleton key={i} cols={5} />
+                        ))}
+                    </tbody>
+                </table>
             ) : categoryList.length === 0 ? (
                 <div className="text-center py-20 bg-white rounded-3xl border border-gray-100 shadow-sm">
                     <p className="text-gray-400 font-medium">Chưa có danh mục nào được tạo.</p>

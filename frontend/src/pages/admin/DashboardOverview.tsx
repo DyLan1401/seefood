@@ -6,19 +6,19 @@ import {
 import { ShoppingBag, Users, Layers, DollarSign, TrendingUp, Loader2 } from 'lucide-react';
 
 // Hooks & Types
-import { useProduct } from '../../hooks/useProducts';
-import { useUsers } from '../../hooks/useUsers';
-import { useOrders } from '../../hooks/useOrder';
+import { useProductList } from '../../hooks/product/useProductList';
+import { useUserList } from '../../hooks/user/useUserList';
+import { useOrderList } from '../../hooks/order/useOrderList';
 import type { Order } from "../../types/order"
 
 
 export default function DashboardOverview() {
 
-    const { products = [], isLoadingProducts } = useProduct();
-    const { users = [], isLoadingList } = useUsers();
-    const { orders = [], isLoadingOrder } = useOrders();
+    const { products = [], isLoading: isLoadingProduct } = useProductList();
+    const { users = [], isLoading: isLoadingUser } = useUserList();
+    const { orders = [], isLoading: isLoadingOrder } = useOrderList();
 
-    const isLoading = isLoadingProducts || isLoadingList || isLoadingOrder;
+    const isLoading = isLoadingProduct || isLoadingUser || isLoadingOrder;
 
     const productList = products?.items || [];
 
@@ -52,7 +52,7 @@ export default function DashboardOverview() {
         return (
             <div className="flex flex-col items-center justify-center min-h-[80vh] text-blue-600">
                 <Loader2 className="animate-spin mb-2" size={40} />
-                <p className="font-bold animate-pulse">Đang tổng hợp dữ liệu Seefood...</p>
+                <p className="font-bold animate-pulse">Đang tổng hợp dữ liệu Seafood...</p>
             </div>
         );
     }

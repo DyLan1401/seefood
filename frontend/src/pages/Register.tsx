@@ -9,7 +9,7 @@ import Header from "../component/Header";
 import Footer from "../component/Footer";
 
 //hooks
-import { useUsers } from "../hooks/useUsers";
+import { useUserMutations } from "../hooks/user/useUserMutation";
 import { useToastStore } from "../store/useToastStore";
 
 //types
@@ -19,7 +19,7 @@ export default function Register() {
 
     const navigate = useNavigate();
     const showToast = useToastStore((state) => state.show);
-    const { Register, isRegistering } = useUsers();
+    const { register: create, isRegister } = useUserMutations();
 
 
 
@@ -36,7 +36,7 @@ export default function Register() {
 
     //hàm đăng kí
     const handleRegister = (data: RegisterFormData) => {
-        Register(data, {
+        create(data, {
             //đăng kí thành công
             onSuccess: () => {
                 showToast("Đăng kí thành công!", "success");
@@ -94,10 +94,10 @@ export default function Register() {
 
                         <button
                             type="submit"
-                            disabled={isRegistering}
+                            disabled={isRegister}
                             className="w-full bg-[#2C8DE0] hover:bg-[#1a6fb8] text-white font-bold py-3 rounded-xl shadow-lg transform transition active:scale-95 mt-2"
                         >
-                            {isRegistering ? "Đăng tạo tài khoản" : "Đăng kí"}
+                            {isRegister ? "Đăng tạo tài khoản" : "Đăng kí"}
                         </button>
                     </form>
 

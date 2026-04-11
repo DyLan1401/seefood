@@ -5,24 +5,26 @@ import { Trash2, SquarePen, UserCircle, Plus, ShieldCheck } from 'lucide-react';
 import { useToastStore } from "../../store/useToastStore";
 
 //hooks
-import { useUsers } from "../../hooks/useUsers";
+import { useUserList } from "../../hooks/user/useUserList";
+import { useUserMutations } from "../../hooks/user/useUserMutation";
 
 //types
 import type { User } from '../../types/user';
+import { TableRowSkeleton } from '../../component/Skeleton';
 
 
 export default function AdminUsers() {
     const showToast = useToastStore((state) => state.show);
 
     //custom hooks
+    const { users, isLoading } = useUserList();
+
     const {
-        users,
         deleteUser,
         updateUser,
-        isLoadingList,
         isDeleting,
         isUpdating
-    } = useUsers();
+    } = useUserMutations();
 
     return (
         <div className="p-6 bg-gray-50 min-h-screen">
@@ -37,11 +39,14 @@ export default function AdminUsers() {
                 </button>
             </div>
 
-            {isLoadingList ? (
-                <div className="flex flex-col items-center justify-center h-64 bg-white rounded-3xl border border-dashed border-gray-200">
-                    <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-600 mb-4"></div>
-                    <p className="text-gray-400 font-medium">Đang tải danh sách...</p>
-                </div>
+            {isLoading ? (
+                <table className="w-full">
+                    <tbody>
+                        {Array.from({ length: 5 }).map((_, i) => (
+                            <TableRowSkeleton key={i} cols={5} />
+                        ))}
+                    </tbody>
+                </table>
             ) : users.length === 0 ? (
                 <div className="text-center py-20 bg-white rounded-3xl border border-gray-100 shadow-sm">
                     <UserCircle size={48} className="mx-auto text-gray-200 mb-4" />

@@ -6,7 +6,7 @@ import Header from "../component/Header";
 import Footer from "../component/Footer";
 
 //hooks
-import { useOrders } from "../hooks/useOrder";
+import { useOrderDetail } from "../hooks/order/useOrderDetail";
 
 //type
 import type { OrderDetailData } from "../types/order";
@@ -18,15 +18,15 @@ import type { OrderDetailData } from "../types/order";
 export default function OrderDetail() {
     const { id } = useParams();
     const navigate = useNavigate();
-    const { orderDetail, isLoadingDetail, isErrorDetail } = useOrders(id);
+    const { order: OrderDetail, isLoading, isError } = useOrderDetail(id);
 
-    const data = orderDetail as OrderDetailData | undefined;
+    const data = OrderDetail as OrderDetailData | undefined;
     const order = data?.order;
     const items = data?.items ?? [];
 
 
 
-    const STATUSES = ["pending", "confirmed", "shipping", "done", "canceled"];
+    // const STATUSES = ["pending", "confirmed", "shipping", "done", "canceled"];
 
     const STATUS_LABEL: Record<string, string> = {
         pending: "Chờ xác nhận",
@@ -45,7 +45,7 @@ export default function OrderDetail() {
     };
 
     // Loading
-    if (isLoadingDetail) return (
+    if (isLoading) return (
         <>
             <Header />
             <div className="flex items-center justify-center min-h-[60vh]">
@@ -59,7 +59,7 @@ export default function OrderDetail() {
     );
 
     // Error
-    if (isErrorDetail || !order) return (
+    if (isError || !order) return (
         <>
             <Header />
             <div className="flex items-center justify-center min-h-[60vh]">
@@ -159,7 +159,7 @@ export default function OrderDetail() {
                                     className="grid grid-cols-12 px-5 py-4 items-center hover:bg-blue-50/40 transition-colors"
                                 >
                                     <div className="col-span-5 flex items-center gap-3">
-                                        <div className="w-9 h-9 rounded-lg bg-blue-50 flex items-center justify-center text-lg flex-shrink-0">
+                                        <div className="w-9 h-9 rounded-lg bg-blue-50 flex items-center justify-center text-lg shrink-0">
                                             🐟
                                         </div>
                                         <span className="text-sm font-medium text-gray-800 leading-tight">
@@ -202,7 +202,7 @@ export default function OrderDetail() {
 // ─── InfoRow ───────────────────────────────────────────────
 const InfoRow = ({ label, value }: { label: string; value: string }) => (
     <div className="flex justify-between items-start gap-3">
-        <span className="text-xs text-gray-400 flex-shrink-0">{label}</span>
+        <span className="text-xs text-gray-400 shrink-0">{label}</span>
         <span className="text-sm font-medium text-gray-800 text-right">{value}</span>
     </div>
 );

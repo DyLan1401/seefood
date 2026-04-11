@@ -7,7 +7,7 @@ import Footer from "../component/Footer";
 import ProductCard from "../component/ProductCard";
 
 //hooks
-import { useProduct } from "../hooks/useProducts";
+import { useProductByCategory } from "../hooks/product/useProductDetail";
 
 //types
 import type { Product } from "../types/product";
@@ -19,15 +19,15 @@ export default function CategoryDetail() {
     const { slug } = useParams();
 
     //lấy data từ hook
-    const { productByCategory, isLoadingProductByCategory, isErrorProductByCategory } = useProduct(undefined, slug);
+    const { products, isLoading, isError } = useProductByCategory(slug);
 
     //kiểm tra data
-    const ListProductByCategory = productByCategory?.data || [];
+    const ListProductByCategory = products?.data || [];
 
     //loading
-    if (isLoadingProductByCategory) return <div className="flex justify-center items-center h-screen font-semibold text-gray-500">Đang tải sản phẩm...</div>;
+    if (isLoading) return <div className="flex justify-center items-center h-screen font-semibold text-gray-500">Đang tải sản phẩm...</div>;
     //Error
-    if (isErrorProductByCategory) return <div className="text-center py-20 text-red-500">Lỗi khi tải sản phẩm</div>;
+    if (isError) return <div className="text-center py-20 text-red-500">Lỗi khi tải sản phẩm</div>;
 
     return (
         <>
@@ -45,6 +45,7 @@ export default function CategoryDetail() {
                         ListProductByCategory.map((p: Product) => (
                             <div key={p.id} className="flex justify-center">
                                 <ProductCard
+                                    id={p.id}
                                     name={p.name}
                                     image_url={p.image_url}
                                     price={p.price}

@@ -7,9 +7,10 @@ import { useMemo } from "react";
 import Footer from "../component/Footer";
 import Header from "../component/Header";
 import ProductCard from "../component/ProductCard";
+import { ProductCardSkeleton } from "../component/Skeleton";
 
 //hooks
-import { useProduct } from "../hooks/useProducts";
+import { useProductList } from "../hooks/product/useProductList";
 
 //types
 import type { Product } from "../types/product";
@@ -19,7 +20,7 @@ export default function Products() {
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
     const searchQuery = (searchParams.get("search") || "").toLowerCase();
-    const { products, isErrorProducts, isLoadingProducts } = useProduct();
+    const { products, isLoading, isError } = useProductList();
 
 
     const productList = products?.items || [];
@@ -35,13 +36,8 @@ export default function Products() {
 
     }, [productList, searchQuery])
 
-    if (isLoadingProducts) return (
-        <div className="flex justify-center items-center min-h-100 font-medium text-gray-500">
-            Đang tải sản phẩm...
-        </div>
-    );
 
-    if (isErrorProducts) return (
+    if (isError) return (
         <div className="text-center py-10 text-red-500">
             Lỗi tải dữ liệu. Vui lòng thử lại.
         </div>
@@ -59,7 +55,11 @@ export default function Products() {
 
                 {/* hiển thị sản phẩm */}
                 <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 md:gap-6 p-2 md:p-4 bg-[#FFF2E8] rounded-b-lg border-x border-b border-[#e5e7eb]">
-                    {filteredProducts.length > 0 ? (
+                    {isLoading ? (
+                        Array.from({ length: 8 }).map((_, i) => (
+                            <ProductCardSkeleton key={i} />
+                        ))
+                    ) : filteredProducts.length > 0 ? (
                         filteredProducts.map((p: Product) => (
                             <Link
                                 key={p.id}

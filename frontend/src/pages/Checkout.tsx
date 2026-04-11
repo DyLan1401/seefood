@@ -3,13 +3,14 @@ import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { checkoutSchema, type CheckoutFormData } from "../lib/validations";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useEffect } from "react";
 
 //components
 import Header from "../component/Header";
 import Footer from "../component/Footer";
 
 //hooks
-import { useOrders } from "../hooks/useOrder";
+import { useOrderMutations } from "../hooks/order/useOrderMutation";
 
 //zustand
 import { useCartStore } from "../store/cartStore";
@@ -28,9 +29,8 @@ export default function Checkout() {
     const { isAuth, user } = useAuthStore();
     const { items, clearCart } = useCartStore();
     const showToast = useToastStore((state) => state.show);
-    const { createOrder, isCreating } = useOrders();
+    const { createOrder, isCreating } = useOrderMutations();
     const navigate = useNavigate();
-
 
 
     const { register, handleSubmit, formState: { errors } } =
@@ -44,9 +44,21 @@ export default function Checkout() {
             },
         });
 
+
+    useEffect(() => {
+        if (!isAuth) {
+            navigate("/login", {
+                state: { from: "/checkout" },
+                replace: true,
+            });
+        }
+    }, [isAuth, navigate]);
+
+
+    if (!isAuth) return null;
+
+
     const handleOrder = async (data: CheckoutFormData) => {
-        // kiểm tra user
-        if (!isAuth) return showToast("Vui lòng đăng nhập để đặt hàng!", "error");
         //kiểm tra số lượng
         if (items.length === 0) return showToast("Giỏ hàng trống!", "error");
 

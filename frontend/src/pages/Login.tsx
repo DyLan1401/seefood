@@ -1,6 +1,6 @@
 //lib
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { loginSchema, type LoginFormData } from "../lib/validations";
 import { zodResolver } from "@hookform/resolvers/zod"; // Thêm dòng này
 
@@ -9,7 +9,7 @@ import Header from "../component/Header";
 import Footer from "../component/Footer";
 
 //hooks
-import { useUsers } from "../hooks/useUsers";
+import { useUserMutations } from "../hooks/user/useUserMutation";
 import { useToastStore } from "../store/useToastStore";
 
 //types
@@ -17,10 +17,11 @@ import type { AxiosError } from "axios";
 
 
 export default function Login() {
+    const location = useLocation();
 
     const navigate = useNavigate();
     const showToast = useToastStore((state) => state.show);
-    const { login, isLoggingIn } = useUsers();
+    const { login, isLogin } = useUserMutations();
 
     const { register,
         handleSubmit,
@@ -33,6 +34,9 @@ export default function Login() {
             }
         });
 
+    const from = (location.state as { from?: string })?.from ?? "/";
+
+
     //hàm đăng nhập
     const handleLogin = (data: LoginFormData) => {
         login(data, {
@@ -42,11 +46,11 @@ export default function Login() {
                 //kiểm tra
                 const userRole = res?.user?.role || res?.data?.user?.role;
 
-                //kiểm tra chuyển hướng
                 if (userRole === "admin") {
-                    navigate("/admin")
+                    navigate("/admin", { replace: true });
                 } else {
-                    navigate("/");
+                    // redirect về trang trước đó thay vì luôn về "/"
+                    navigate(from, { replace: true });
                 }
 
             },
@@ -97,11 +101,11 @@ export default function Login() {
 
                         <button
                             type="submit"
-                            disabled={isLoggingIn}
+                            disabled={isLogin}
                             className="w-full bg-[#2C8DE0] hover:bg-[#1a6fb8] text-white font-bold py-3 rounded-xl shadow-lg transform transition active:scale-95 mt-2"
 
                         >
-                            {isLoggingIn ? "Đang chuyển trang" : "Đăng nhập"}
+                            {isLogin ? "Đang chuyển trang" : "Đăng nhập"}
                         </button>
                     </form>
                     {/* Chuyển hướng */}

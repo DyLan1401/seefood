@@ -7,7 +7,7 @@ import { X, Save, ImageIcon, Loader2, Tag, Upload } from "lucide-react";
 import { useToastStore } from "../store/useToastStore";
 
 //hooks
-import { useCategory } from "../hooks/useCategory";
+import { useCategoryMutations } from "../hooks/category/useCategoryMutation";
 
 //types
 import type { Category, CategoryModalProps } from "../types/category";
@@ -22,6 +22,8 @@ export default function CategoryModal({ isOpen, onClose, initialData }: Category
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const [previewUrl, setPreviewUrl] = useState<string>("");
 
+
+
     //custom hook
     const {
         createCategory,
@@ -29,8 +31,8 @@ export default function CategoryModal({ isOpen, onClose, initialData }: Category
         uploadImage,
         isCreating,
         isUpdating,
-        isUploading
-    } = useCategory(initialData?.id);
+        isUploadingImage
+    } = useCategoryMutations(initialData?.id);
 
     //react hook form
     const { register, handleSubmit, reset, formState: { errors } } = useForm<Category>({
@@ -85,7 +87,7 @@ export default function CategoryModal({ isOpen, onClose, initialData }: Category
 
     if (!isOpen) return null;
 
-    const isGlobalLoading = isCreating || isUpdating || isUploading;
+    const isGlobalLoading = isCreating || isUpdating || isUploadingImage;
 
     return (
         <div className="fixed inset-0 z-60 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
@@ -107,7 +109,7 @@ export default function CategoryModal({ isOpen, onClose, initialData }: Category
                             ) : (
                                 <ImageIcon className="text-gray-300" size={40} />
                             )}
-                            {isUploading && <div className="absolute inset-0 bg-white/70 flex items-center justify-center"><Loader2 className="animate-spin text-blue-600" /></div>}
+                            {isUploadingImage && <div className="absolute inset-0 bg-white/70 flex items-center justify-center"><Loader2 className="animate-spin text-blue-600" /></div>}
                         </div>
                         <label className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-xl text-sm font-bold text-gray-600 cursor-pointer hover:bg-blue-50 hover:text-blue-600 transition-all shadow-sm">
                             <Upload size={16} /> Chọn ảnh đại diện

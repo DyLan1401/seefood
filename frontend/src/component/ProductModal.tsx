@@ -11,8 +11,8 @@ import {
 import { useToastStore } from "../store/useToastStore";
 
 //hooks
-import { useProduct } from "../hooks/useProducts";
-import { useCategory } from "../hooks/useCategory";
+import { useProductMutations } from "../hooks/product/useProductMutation";
+import { useCategoryList } from "../hooks/category/useCategoryList";
 
 //types
 import type { Product, ProductFormProps } from "../types/product";
@@ -25,11 +25,12 @@ export default function ProductModal({ isOpen, onClose, initialData }: ProductFo
     const showToast = useToastStore((state) => state.show);
     const isEdit = !!initialData;
 
-    const { categories } = useCategory();
+    const { categories } = useCategoryList();
 
     const categoryList = categories?.items || [];
+
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
-    const [previewUrl, setPreviewUrl] = useState<string>(initialData?.image_url || "");
+    const [previewUrl, setPreviewUrl] = useState<string>("");
     const {
         createProduct,
         updateProduct,
@@ -37,7 +38,7 @@ export default function ProductModal({ isOpen, onClose, initialData }: ProductFo
         isUpdating,
         uploadImage,
         isUploadingImage
-    } = useProduct(initialData?.id?.toString());
+    } = useProductMutations(initialData?.id?.toString());
 
     const {
         register,

@@ -45,6 +45,4 @@ PATCH https://seafood-vyx2.onrender.com/api/orders/:id/status cập nhật đơn
 
 
 **Admin test account**
---admin1@gmail.com
---1234561
-
+liên hệ để cấp tải khoản admin để test

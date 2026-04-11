@@ -3,32 +3,42 @@ import Header from "../component/Header";
 import Footer from "../component/Footer";
 
 //hooks
-import { useOrders } from "../hooks/useOrder";
+import { useMyOrder } from "../hooks/order/useOrderList";
 import type { Order } from "../types/order";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuthStore } from "../store/authStore";
+import { useEffect } from "react";
 export default function MyOrders() {
+    const { isAuth } = useAuthStore();
+    const navigate = useNavigate();
 
+    const { myOrder, isLoading, isError } = useMyOrder();
+    const myOrders = Array.isArray(myOrder) ? myOrder : (myOrder?.data || []);
 
-    const { userOrder, isLoadingUserOrder, isErrorUserOrder } = useOrders();
+    useEffect(() => {
+        if (!isAuth) {
+            navigate("/login", {
+                state: { from: "/my-order" },
+                replace: true,
+            });
+        }
+    }, [isAuth, navigate]);
 
+    if (!isAuth) return null;
 
-
-
-
-    const myOrders = Array.isArray(userOrder) ? userOrder : (userOrder?.data || []);
 
     // Trạng thái đang tải
-    if (isLoadingUserOrder) return <div className="p-10 text-center animate-pulse">Đang tải đơn hàng...</div>;
+    if (isLoading) return <div className="p-10 text-center animate-pulse">Đang tải đơn hàng...</div>;
 
     // Trạng thái lỗi
-    if (isErrorUserOrder) return (
+    if (isError) return (
         <div className="p-10 text-center text-red-500 bg-red-50 rounded-lg m-4">
             Không thể kết nối với máy chủ. Vui lòng thử lại sau.
         </div>
     );
 
     // Trạng thái không có dữ liệu
-    if (!userOrder || userOrder.length === 0) return (
+    if (!myOrder || myOrder.length === 0) return (
         <div className="p-10 text-center border-2 border-dashed border-gray-200 rounded-xl m-4 text-gray-500">
             Bạn chưa có đơn hàng nào trong lịch sử.
         </div>

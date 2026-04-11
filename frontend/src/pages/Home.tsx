@@ -8,10 +8,15 @@ import ProductCard from "../component/ProductCard";
 import CategoryCard from "../component/CategoryCard";
 import Banner from "../component/Banner";
 import Button from "../component/Button";
+import {
+    CategoryCardSkeleton,
+    ProductCardSkeleton,
+} from "../component/Skeleton";
+
 
 //hooks
-import { useProduct } from "../hooks/useProducts";
-import { useCategory } from "../hooks/useCategory";
+import { useProductList } from "../hooks/product/useProductList";
+import { useCategoryList } from "../hooks/category/useCategoryList";
 
 //types
 import type { Category } from "../types/category"
@@ -20,12 +25,11 @@ import type { Product } from "../types/product";
 export default function Home() {
 
     //lấy data từ hook
-    const { products, isLoadingProducts, isErrorProducts } = useProduct();
-    const { categories, isLoadingCategory, isErrorCategory } = useCategory();
+    const { products, isLoading: isLoadingProducts, isError: isErrorProducts } = useProductList();
+    const { categories, isLoading: isLoadingCategories, isError: isErrorCategories } = useCategoryList();
 
-    //báo error và loading
-    if (isLoadingProducts || isLoadingCategory) return <div className="flex justify-center items-center h-screen">Loading...</div>
-    if (isErrorProducts || isErrorCategory) return <div className="text-center py-10">Lỗi tải Dữ liệu</div>
+    //báo error 
+    if (isErrorProducts || isErrorCategories) return <div className="text-center py-10">Lỗi tải Dữ liệu</div>
 
     return (
         <>
@@ -40,7 +44,11 @@ export default function Home() {
                     </div>
                     {/* hiển thị danh sách sản phẩm */}
                     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 md:gap-6 p-2 md:p-4 bg-[#FFF2E8] rounded-b-lg">
-                        {products?.items && products.items.length > 0 ? (
+                        {isLoadingProducts ? (
+                            Array.from({ length: 8 }).map((_, i) => (
+                                <ProductCardSkeleton key={i} />
+                            ))
+                        ) : products?.items && products.items.length > 0 ? (
                             products.items.map((p: Product) => (
                                 <Link
                                     key={p.id}
@@ -74,7 +82,12 @@ export default function Home() {
                     </div>
                     {/* hiển thị danh sách danh mục */}
                     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 md:gap-6 p-2 md:p-4 bg-[#FFF2E8] rounded-b-lg">
-                        {categories?.items && categories.items.length > 0 ? (
+                        {isLoadingCategories ? (
+                            // Hiện 8 skeleton card khi đang load
+                            Array.from({ length: 8 }).map((_, i) => (
+                                <CategoryCardSkeleton key={i} />
+                            ))
+                        ) : categories?.items && categories.items.length > 0 ? (
                             categories.items.map((c: Category) => (
                                 <Link
                                     key={c.id}
