@@ -1,4 +1,3 @@
-// components/admin/Sidebar.tsx
 import { LayoutDashboard, Package, ShoppingCart, Users, FolderTree } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 

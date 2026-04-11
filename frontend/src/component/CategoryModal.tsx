@@ -1,33 +1,44 @@
+//lib
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { X, Save, ImageIcon, Loader2, Tag, Upload } from "lucide-react";
-import { useToastStore } from "../store/useToastStore";
-import { useCategory } from "../hooks/useCategory";
-import { uploadCategoryImage } from "../api/categoryApi";
-import type { Category } from "../types/category";
 
-interface CategoryModalProps {
-    isOpen: boolean;
-    onClose: () => void;
-    initialData?: Category | null;
-}
+//zustand
+import { useToastStore } from "../store/useToastStore";
+
+//hooks
+import { useCategory } from "../hooks/useCategory";
+
+//types
+import type { Category, CategoryModalProps } from "../types/category";
+
+
 
 export default function CategoryModal({ isOpen, onClose, initialData }: CategoryModalProps) {
     const showToast = useToastStore((state) => state.show);
     const isEdit = !!initialData;
 
+    //state
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const [previewUrl, setPreviewUrl] = useState<string>("");
-    const [isUploading, setIsUploading] = useState(false);
 
-    const { createCategory, updateCategory, isCreating, isUpdating } = useCategory(initialData?.id);
+    //custom hook
+    const {
+        createCategory,
+        updateCategory,
+        uploadImage,
+        isCreating,
+        isUpdating,
+        isUploading
+    } = useCategory(initialData?.id);
 
+    //react hook form
     const { register, handleSubmit, reset, formState: { errors } } = useForm<Category>({
         values: (initialData || { name: "", slug: "", image_url: "" }) as Category
     });
 
 
-
+    //
     useEffect(() => {
         if (isOpen) {
             setPreviewUrl(initialData?.image_url || "");
@@ -35,6 +46,7 @@ export default function CategoryModal({ isOpen, onClose, initialData }: Category
         }
     }, [isOpen, initialData]);
 
+    //
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (file) {
@@ -43,24 +55,21 @@ export default function CategoryModal({ isOpen, onClose, initialData }: Category
         }
     };
 
+    //xử lí tạo
     const onSubmit = async (data: Category) => {
         let finalImageUrl = initialData?.image_url || "";
 
         if (selectedFile) {
-            setIsUploading(true);
             try {
-                const res = await uploadCategoryImage(selectedFile);
+                // Sử dụng mutateAsync từ hook để đợi lấy URL ảnh trả về
+                const res = await uploadImage(selectedFile);
                 finalImageUrl = res.imageUrl;
             } catch (err) {
                 console.log(err);
-                showToast("Không thể tải ảnh lên Cloudinary", "error");
-                setIsUploading(false);
+                showToast("Không thể tải ảnh lên hệ thống", "error");
                 return;
-            } finally {
-                setIsUploading(false);
             }
         }
-
         const payload = { ...data, image_url: finalImageUrl };
 
         if (isEdit && initialData?.id) {
@@ -79,7 +88,7 @@ export default function CategoryModal({ isOpen, onClose, initialData }: Category
     const isGlobalLoading = isCreating || isUpdating || isUploading;
 
     return (
-        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
+        <div className="fixed inset-0 z-60 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
             <div className="bg-white rounded-3xl shadow-2xl w-full max-w-md overflow-hidden">
                 <div className="p-6 border-b flex justify-between items-center bg-gray-50/80">
                     <div className="flex items-center gap-3">
@@ -90,7 +99,7 @@ export default function CategoryModal({ isOpen, onClose, initialData }: Category
                 </div>
 
                 <form onSubmit={handleSubmit(onSubmit)} className="p-6 space-y-5">
-                    {/* Upload Image Section */}
+                    {/* Upload ảnh */}
                     <div className="flex flex-col items-center gap-4 p-4 border-2 border-dashed border-gray-100 rounded-2xl bg-gray-50">
                         <div className="w-24 h-24 rounded-2xl bg-white border shadow-sm overflow-hidden flex items-center justify-center relative">
                             {previewUrl ? (
@@ -123,7 +132,7 @@ export default function CategoryModal({ isOpen, onClose, initialData }: Category
 
                     <div className="pt-4 flex gap-3">
                         <button type="button" onClick={onClose} className="flex-1 py-3 font-bold text-gray-500 hover:bg-gray-100 rounded-xl transition-all">Hủy</button>
-                        <button disabled={isGlobalLoading} type="submit" className="flex-[2] py-3 bg-blue-600 text-white rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-blue-700 disabled:opacity-50 transition-all shadow-lg shadow-blue-100">
+                        <button disabled={isGlobalLoading} type="submit" className="flex-2 py-3 bg-blue-600 text-white rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-blue-700 disabled:opacity-50 transition-all shadow-lg shadow-blue-100">
                             {isGlobalLoading ? <Loader2 className="animate-spin" /> : <Save size={18} />}
                             {isEdit ? "Lưu thay đổi" : "Tạo danh mục"}
                         </button>

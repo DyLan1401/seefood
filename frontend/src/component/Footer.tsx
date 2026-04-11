@@ -1,12 +1,7 @@
 export default function Footer() {
     return (
-        /* 1. Loại bỏ h-96 cố định để nội dung có thể giãn ra trên mobile, thêm h-auto */
         <div className="container mx-auto w-full h-auto min-h-64 mt-5 bg-amber-200">
 
-            {/* 2. Chuyển từ flex sang grid: 
-                   grid-cols-1 (mobile) 
-                   sm:grid-cols-2 (máy tính bảng)
-                   md:grid-cols-4 (máy tính lớn) */}
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 p-5 md:p-10">
 
                 {/* Cột 1 */}
@@ -43,7 +38,6 @@ export default function Footer() {
                     <div className="text-lg font-semibold mb-2">KẾT NỐI VỚI CHÚNG TÔI</div>
                     <div className="text-center md:text-left">
                         <div className="flex gap-4">
-                            {/* Bạn có thể thêm icon Facebook, Zalo ở đây */}
                             <span>Facebook</span>
                             <span>Zalo</span>
                         </div>

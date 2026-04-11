@@ -1,4 +1,3 @@
-// components/admin/AdminLayout.tsx
 import { Outlet } from "react-router-dom";
 import Sidebar from "./sideBar";
 import AdminHeader from "./AdminHeader";
@@ -6,12 +5,12 @@ import AdminHeader from "./AdminHeader";
 export default function AdminLayout() {
     return (
         <div className="flex h-screen bg-gray-100">
-            {/* 1. Sidebar bên trái - Cố định độ rộng */}
+            {/* 1. Sidebar bên trái */}
             <aside className="w-64 bg-white border-r hidden md:block">
                 <Sidebar />
             </aside>
 
-            {/* 2. Phần nội dung bên phải - Chiếm hết khoảng trống còn lại */}
+            {/* 2. Phần nội dung bên phải */}
             <div className="flex-1 flex flex-col overflow-hidden">
                 <AdminHeader />
 

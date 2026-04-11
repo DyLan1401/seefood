@@ -48,6 +48,7 @@ export default function Home() {
                                     className="w-full flex justify-center"
                                 >
                                     <ProductCard
+                                        id={p.id}
                                         name={p.name}
                                         image_url={p.image_url}
                                         price={p.price}
@@ -81,6 +82,7 @@ export default function Home() {
                                     className="w-full flex justify-center"
                                 >
                                     <CategoryCard
+                                        id={c.id}
                                         name={c.name}
                                         image_url={c.image_url}
                                         slug={c.slug}

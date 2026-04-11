@@ -38,7 +38,7 @@ export default function Checkout() {
         formState: { errors },
     } = useForm<CheckoutFormData>({
         defaultValues: {
-            customerName: user?.username || "", // Điền sẵn tên nếu có
+            customerName: user?.username || "",
             phone: "",
             address: "",
             note: ""
@@ -57,6 +57,7 @@ export default function Checkout() {
                 items: items.map(i => ({
                     productId: i.productId,
                     qty: i.qty
+
                 }))
             };
 

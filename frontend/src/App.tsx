@@ -36,17 +36,17 @@ function App() {
         <Route path="/register" element={<Resigter />} />
         <Route path="/product/category/:slug" element={<CategoryDetail />} />
         <Route path='/categories' element={<Categories />} />
-        <Route path='/my-orders' element={<UserOrders />} />
+        <Route path='/my-order' element={<UserOrders />} />
         <Route path="/order/:id" element={<OrderDetail />} />
 
         {/* Admin */}
         <Route path="/admin" element={<AdminLayout />} >
 
           <Route index element={<DashboardOverview />} />
-          <Route path="products" element={<AdminProducts />} />
-          <Route path="orders" element={<AdminOrders />} />
-          <Route path="categories" element={<AdminCategories />} />
-          <Route path="users" element={<AdminUsers />} />
+          <Route path="/products" element={<AdminProducts />} />
+          <Route path="/orders" element={<AdminOrders />} />
+          <Route path="/categories" element={<AdminCategories />} />
+          <Route path="/users" element={<AdminUsers />} />
         </Route >
 
         <Route path="*" element={<Error404 />} />

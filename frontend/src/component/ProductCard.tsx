@@ -1,18 +1,12 @@
-
-type Product = {
-    image_url: string | null
-    name: string
-    sale_price: number | null
-    price: number
-}
+import type { Product } from "../types/product"
 
 export default function ProductCard({ image_url, name, sale_price, price }: Product) {
     return (
         /* */
-        <div className="w-full max-w-[240px] h-80 border-2 border-neutral-400 rounded-3xl p-4 flex flex-col items-start justify-between gap-2 bg-white mx-auto transition-all hover:shadow-md">
+        <div className="w-full max-w-60 h-80 border-2 border-neutral-400 rounded-3xl p-4 flex flex-col items-start justify-between gap-2 bg-white mx-auto transition-all hover:shadow-md">
 
             {/* */}
-            <div className="w-full aspect-[4/3] rounded-2xl overflow-hidden bg-gray-50 shrink-0">
+            <div className="w-full aspect-4/3 rounded-2xl overflow-hidden bg-gray-50 shrink-0">
                 {image_url ? (
                     <img loading="lazy" className="object-cover w-full h-full" src={image_url} alt={name} />
                 ) : (

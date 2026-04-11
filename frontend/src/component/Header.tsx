@@ -39,7 +39,7 @@ export default function Header() {
         <div className="container mx-auto px-2">
             <div className="flex flex-col w-full h-full">
                 {/*  */}
-                <div className="w-full min-h-[40px] md:h-16 flex justify-between md:justify-around items-center bg-[#FFF2E8] font-semibold px-2 text-[10px] md:text-base">
+                <div className="w-full min-h-10 md:h-16 flex justify-between md:justify-around items-center bg-[#FFF2E8] font-semibold px-2 text-[10px] md:text-base">
                     <Link to="/">
                         <GiFishSmoking className="w-8 h-8 md:w-10 md:h-10 text-red-600" />
                     </Link>
@@ -85,7 +85,7 @@ export default function Header() {
                         <div className="relative">
                             <div className="flex items-center gap-1 cursor-pointer group" onClick={() => toggleMenu('auth')}>
                                 <HiUserCircle size={32} className="text-white md:text-gray-700 group-hover:text-sky-600 transition-colors" />
-                                {isAuth && <span className="hidden lg:inline text-xs text-white max-w-[80px] truncate">Hi, {user?.email}</span>}
+                                {isAuth && <span className="hidden lg:inline text-xs text-white max-w-20 truncate">Hi, {user?.email}</span>}
                             </div>
 
                             {activeMenu === 'auth' && (
@@ -129,7 +129,7 @@ export default function Header() {
                         {activeMenu === 'category' && (
                             <>
                                 <div className="fixed inset-0 z-10" onClick={() => setActiveMenu("")}></div>
-                                <div className="absolute w-full h-auto left-0 top-full z-[101] bg-white shadow-lg py-2 border-t border-gray-200">
+                                <div className="absolute w-full h-auto left-0 top-full z-101 bg-white shadow-lg py-2 border-t border-gray-200">
                                     <Link to="/categories" onClick={() => setActiveMenu("")} className="block px-4 py-3 text-gray-700 hover:bg-sky-50 border-b">Tất cả danh mục</Link>
                                     <Link to="/products" onClick={() => setActiveMenu("")} className="block px-4 py-3 text-gray-700 hover:bg-sky-50">Tất cả sản phẩm</Link>
                                 </div>

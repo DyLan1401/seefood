@@ -1,15 +1,32 @@
+//lib
 import { Trash2, SquarePen, UserCircle, Plus, ShieldCheck } from 'lucide-react';
+
+//zustands
 import { useToastStore } from "../../store/useToastStore";
+
+//hooks
 import { useUsers } from "../../hooks/useUsers";
+
+//types
 import type { User } from '../../types/user';
+
 
 export default function AdminUsers() {
     const showToast = useToastStore((state) => state.show);
-    const { users, isLoadingList, deleteUser, updateUser, isDeleting, isUpdating } = useUsers();
+
+    //custom hooks
+    const {
+        users,
+        deleteUser,
+        updateUser,
+        isLoadingList,
+        isDeleting,
+        isUpdating
+    } = useUsers();
 
     return (
         <div className="p-6 bg-gray-50 min-h-screen">
-            {/* Header Section */}
+            {/* Header  */}
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
                 <div>
                     <h1 className="text-2xl font-black text-gray-800 tracking-tight">Quản Lý Người Dùng</h1>
@@ -82,6 +99,7 @@ export default function AdminUsers() {
                                                         if (window.confirm(`Xác nhận xóa tài khoản: ${u.email}?`)) {
                                                             deleteUser(u.id, {
                                                                 onSuccess: () => showToast(`Đã xóa ${u.email}`, "success"),
+                                                                onError: () => showToast(`đã bị lỗi khi xóa ${u.email}`, "error")
                                                             });
                                                         }
                                                     }}

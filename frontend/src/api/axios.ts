@@ -5,15 +5,15 @@ const api = axios.create({
 });
 
 api.interceptors.request.use((config) => {
-    // 1. Lấy dữ liệu thô từ LocalStorage
+    // 1. Lấy dữ liệu từ LocalStorage
     const authStorage = localStorage.getItem("auth-storage");
 
     if (authStorage) {
         try {
-            // 2. Parse chuỗi JSON
+            // 2.  
             const parsedData = JSON.parse(authStorage);
 
-            // 3. Truy cập vào state -> token (đúng cấu trúc Zustand persist)
+            // 3. truy cập vào state->token
             const token = parsedData.state?.token;
 
             if (token) {

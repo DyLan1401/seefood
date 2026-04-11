@@ -44,7 +44,7 @@ export const getProductDetail = async (req, res) => {
             error: error.message
         })
     }
-}
+};
 
 //sản phâm thuộc danh mục
 export const getProductsByCategory = async (req, res) => {
@@ -66,7 +66,7 @@ export const getProductsByCategory = async (req, res) => {
             error: error.message
         })
     }
-}
+};
 
 //tạo sản phẩm
 export const createProduct = async (req, res) => {
@@ -101,7 +101,7 @@ export const updateProduct = async (req, res) => {
 
         const data = await productService.updateProduct({ id, name, slug, price, sale_price, stock, image_url, description, origin, weight, category_id });
 
-        if (!data) {
+        if (data.affectedRows === 0) {
             return res.status(404).json({
                 message: `Không thể cập nhật sản phẩm id: ${id} `,
             });
@@ -141,8 +141,9 @@ export const deleteProduct = async (req, res) => {
             error: error.message
         })
     }
-}
+};
 
+//upload file
 export const uploadFile = async (req, res) => {
     try {
         if (!req.file) {
@@ -151,7 +152,7 @@ export const uploadFile = async (req, res) => {
 
         // Tải file lên Cloudinary
         const result = await cloudinary.uploader.upload(req.file.path, {
-            folder: 'seefood_products', // Thư mục lưu ảnh trên Cloudinary
+            folder: 'seafood_products', // Thư mục lưu ảnh trên Cloudinary
         });
 
         // Trả về URL thật của ảnh
@@ -161,4 +162,4 @@ export const uploadFile = async (req, res) => {
     } catch (error) {
         res.status(500).json({ message: 'Lỗi upload ảnh', error: error.message });
     }
-}
+};

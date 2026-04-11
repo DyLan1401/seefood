@@ -20,7 +20,7 @@ export const userList = async (req, res) => {
             error: error.message
         })
     }
-}
+};
 
 //chi tiết người dùng
 export const userDetail = async (req, res) => {
@@ -62,7 +62,7 @@ export const deleteUser = async (req, res) => {
             error: error.message
         })
     }
-}
+};
 
 //chỉnh sửa người dùng
 export const updateUser = async (req, res) => {
@@ -86,8 +86,7 @@ export const updateUser = async (req, res) => {
             error: error.message
         })
     }
-}
-
+};
 
 //đăng nhập
 export const Login = async (req, res) => {
@@ -105,7 +104,7 @@ export const Login = async (req, res) => {
             return res.status(401).json({ error: "Mật khẩu không chính xác" });
         }
 
-        // Tạo token (Phần này bạn làm đúng rồi, có chứa id)
+        // Tạo token
         const token = jwt.sign(
             { id: user.id, email: user.email, role: user.role },
             process.env.JWT_SECRET,

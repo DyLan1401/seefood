@@ -1,8 +1,14 @@
-import { useOrders } from "../../hooks/useOrder";
+//lib
 import { Trash2, ClipboardList, User2, MapPin, Calendar, Hash } from 'lucide-react';
-import { useToastStore } from "../../store/useToastStore";
-import type { Order } from "../../types/order";
 
+//zustands
+import { useToastStore } from "../../store/useToastStore";
+
+//hooks
+import { useOrders } from "../../hooks/useOrder";
+
+//types
+import type { Order } from "../../types/order";
 const STATUS_LABEL: Record<string, string> = {
     pending: "Chờ xác nhận", confirmed: "Đã xác nhận", shipping: "Đang giao", done: "Đã giao", canceled: "Đã hủy",
 };
@@ -17,11 +23,19 @@ const STATUS_COLOR: Record<string, string> = {
 
 export default function AdminOrders() {
     const showToast = useToastStore((state) => state.show);
-    const { orders, isLoadingOrder, updateOrder, isUpdating, deleteOrder } = useOrders();
+
+    const {
+        orders,
+        updateOrder,
+        deleteOrder,
+        isLoadingOrder,
+        isUpdating,
+        isDeleting
+    } = useOrders();
 
     return (
         <div className="p-6 bg-gray-50 min-h-screen">
-            {/* Header Section */}
+            {/* Header  */}
             <div className="mb-8">
                 <h1 className="text-2xl font-black text-gray-800 tracking-tight">Quản Lý Đơn Hàng</h1>
                 <p className="text-sm text-gray-500 font-medium">Theo dõi doanh thu và tiến độ xử lý đơn hàng Seefood</p>
@@ -94,6 +108,7 @@ export default function AdminOrders() {
                                         <td className="px-6 py-4">
                                             <div className="flex justify-center">
                                                 <button
+                                                    disabled={isDeleting}
                                                     onClick={() => {
                                                         if (["done", "canceled"].includes(order.status)) {
                                                             if (window.confirm(`Xóa đơn hàng #${order.id}?`)) deleteOrder(order.id);

@@ -13,23 +13,23 @@ import type { Order } from "../../types/order"
 
 
 export default function DashboardOverview() {
-    // 1. Sửa lại tên biến isLoading khớp với hook của bạn (Dựa trên lỗi 2339)
-    const { products = [], isLoadingProducts: loadP } = useProduct();
-    const { users = [], isLoadingList: loadU } = useUsers(); // Giữ nguyên theo thông tin của bạn
-    const { orders = [], isLoadingOrder: loadO } = useOrders();
 
-    const isLoading = loadP || loadU || loadO;
+    const { products = [], isLoadingProducts } = useProduct();
+    const { users = [], isLoadingList } = useUsers();
+    const { orders = [], isLoadingOrder } = useOrders();
+
+    const isLoading = isLoadingProducts || isLoadingList || isLoadingOrder;
 
     const productList = products?.items || [];
 
 
 
-    // 2. Tính toán thống kê
+    // 2. Tính toán 
     const stats = useMemo(() => {
         const totalRevenue = orders
             .filter((o: Order) => o.status === 'completed' || o.status === 'delivered')
             .reduce((sum: number, order: Order) => {
-                // Sử dụng any cho order ở đây nếu interface Order của bạn chưa có total_price
+
                 return sum + (Number(order.total_price) || 0);
             }, 0);
 

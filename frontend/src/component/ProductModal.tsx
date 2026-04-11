@@ -1,3 +1,4 @@
+//lib
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import {
@@ -6,19 +7,19 @@ import {
     Loader2, MapPin, Weight
 } from "lucide-react";
 
-// Store & Hooks
+//zustand 
 import { useToastStore } from "../store/useToastStore";
+
+//hooks
 import { useProduct } from "../hooks/useProducts";
-import type { Product } from "../types/product";
 import { useCategory } from "../hooks/useCategory";
+
+//types
+import type { Product, ProductFormProps } from "../types/product";
 import type { Category } from "../types/category";
 
 
-interface ProductFormProps {
-    isOpen: boolean;
-    onClose: () => void;
-    initialData?: Product | null;
-}
+
 
 export default function ProductModal({ isOpen, onClose, initialData }: ProductFormProps) {
     const showToast = useToastStore((state) => state.show);
@@ -44,7 +45,7 @@ export default function ProductModal({ isOpen, onClose, initialData }: ProductFo
         reset,
         formState: { errors }
     } = useForm<Product>({
-        // Fix lỗi ép kiểu Product (Sử dụng Partial để chấp nhận dữ liệu thiếu id/created_at)
+        // Fix lỗi ép kiểu Product 
         values: (initialData || {
             name: "",
             slug: "",

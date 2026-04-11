@@ -4,11 +4,13 @@ import * as api from "../api/categoryApi";
 export const useCategory = (id?: string) => {
     const queryClient = useQueryClient();
 
+    //danh sách danh mục
     const listQuery = useQuery({
         queryKey: ["categories"],
         queryFn: api.fetchCategoryList,
     });
 
+    //chi tiết danh mục
     const detailQuery = useQuery({
         queryKey: ["categories", "detail", id],
         queryFn: () => api.fetchCategoryDetail(id!),
@@ -16,7 +18,7 @@ export const useCategory = (id?: string) => {
         staleTime: 10 * 60 * 1000
     });
 
-    // Thêm Create Mutation
+    //tạo danh mục
     const createMutation = useMutation({
         mutationFn: api.fetchCreateCategory,
         onSuccess: () => {
@@ -24,6 +26,7 @@ export const useCategory = (id?: string) => {
         }
     });
 
+    //cập nhật danh mục
     const updateMutation = useMutation({
         // API này nhận object { id, productData }
         mutationFn: api.fetchUpdateCategory,
@@ -33,12 +36,15 @@ export const useCategory = (id?: string) => {
         }
     });
 
+    //xóa danh mục
     const deleteMutation = useMutation({
         mutationFn: api.fetchDeleteCategory,
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["categories"] });
         }
     });
+
+    //upload file (Async)
     const uploadMutation = useMutation({
         mutationFn: api.uploadCategoryImage,
     });
@@ -46,11 +52,11 @@ export const useCategory = (id?: string) => {
 
     return {
 
-        // Data
+        //dữ liệu
         categories: listQuery.data,
         CategoryDetail: detailQuery.data,
 
-        // Trạng thái loading
+        //trạng thái loading
         isLoadingCategory: listQuery.isLoading,
         isLoadingDetail: detailQuery.isLoading,
         isCreating: createMutation.isPending,
@@ -58,13 +64,12 @@ export const useCategory = (id?: string) => {
         isDeleting: deleteMutation.isPending,
         isUploading: uploadMutation.isPending,
 
-        //Trạng thái lỗi
+        //trạng thái lỗi
         isErrorCategory: listQuery.isError,
         isErrorDetail: detailQuery.isError,
 
-
-        // Hành động (Actions)
-        uploadImage: uploadMutation.mutateAsync, // Dùng mutateAsync để đợi lấy URL
+        //hành động 
+        uploadImage: uploadMutation.mutateAsync,
         createCategory: createMutation.mutate,
         updateCategory: updateMutation.mutate,
         deleteCategory: deleteMutation.mutate

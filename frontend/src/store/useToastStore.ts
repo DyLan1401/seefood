@@ -9,7 +9,7 @@ export const useToastStore = create<toast.ToastState>((set) => ({
             toasts: [...state.toasts, { id, message, type }]
         }));
 
-        // Tự động xóa sau 3s
+        // 
         setTimeout(() => {
             set((state) => ({
                 toasts: state.toasts.filter((t) => t.id !== id)

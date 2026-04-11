@@ -1,18 +1,34 @@
+//lib
 import { useState } from 'react';
 import { Trash2, SquarePen, ImageIcon, Plus } from 'lucide-react';
-import { useCategory } from "../../hooks/useCategory";
-import { useToastStore } from "../../store/useToastStore";
+
+//components
 import CategoryModal from "../../component/CategoryModal";
+
+//zustands
+import { useToastStore } from "../../store/useToastStore";
+
+//hooks
+import { useCategory } from "../../hooks/useCategory";
+
+//types
 import type { Category } from "../../types/category";
 
 export default function AdminCategories() {
     const showToast = useToastStore((state) => state.show);
-    const { categories, isLoadingCategory, deleteCategory } = useCategory();
 
-    // States cho Modal
+    // States 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
 
+
+    const {
+        categories,
+        deleteCategory,
+        isLoadingCategory,
+        isUpdating,
+        isDeleting
+    } = useCategory();
     const categoryList = categories?.items || [];
 
     const handleEdit = (category: Category) => {
@@ -85,16 +101,20 @@ export default function AdminCategories() {
                                     <td className="px-6 py-4">
                                         <div className="flex items-center justify-center gap-2">
                                             <button
+                                                disabled={isUpdating}
                                                 onClick={() => handleEdit(c)}
                                                 className="p-2.5 text-blue-600 hover:bg-blue-100 rounded-xl transition-all"
                                             >
                                                 <SquarePen size={18} />
                                             </button>
                                             <button
+                                                disabled={isDeleting}
                                                 onClick={() => {
                                                     if (window.confirm(`Xóa danh mục "${c.name}"?`)) {
                                                         deleteCategory(c.id, {
-                                                            onSuccess: () => showToast("Đã xóa danh mục", "success")
+                                                            onSuccess: () => showToast(`Đã xóa danh mục ${c.name}`, "success"),
+                                                            onError: () => showToast(`Đã bị lỗi khi xóa danh mục ${c.name}`, "success")
+
                                                         });
                                                     }
                                                 }}
@@ -111,7 +131,7 @@ export default function AdminCategories() {
                 </div>
             )}
 
-            {/* Modal Components */}
+            {/* Modal  */}
             <CategoryModal
                 isOpen={isModalOpen}
                 onClose={() => setIsModalOpen(false)}

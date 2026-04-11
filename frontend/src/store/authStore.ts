@@ -1,13 +1,9 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
+import type { User } from "../types/user";
 
 
-export type User = {
-    id: number | string;
-    username: string,
-    email: string;
-    role: string;
-};
+
 
 interface AuthState {
     token: string | null;
@@ -16,6 +12,8 @@ interface AuthState {
     setLogin: (token: string, user: User) => void;
     logout: () => void;
 }
+
+
 export const useAuthStore = create<AuthState>()(
     persist(
         (set) => ({
@@ -34,7 +32,7 @@ export const useAuthStore = create<AuthState>()(
                 // 2. Xóa LocalStorage
                 localStorage.removeItem("auth-storage");
 
-                window.location.href = "/login";
+                window.location.href = "/";
             },
         }),
 

@@ -5,15 +5,15 @@ import { useAuthStore } from '../store/authStore';
 export const useUsers = (userId?: string) => {
     const queryClient = useQueryClient();
 
-
     const setLogin = useAuthStore((state) => state.setLogin);
-    // 1. LẤY TOÀN BỘ DANH SÁCH USER
+
+    //danh sách người dùng
     const listQuery = useQuery({
         queryKey: ["users"],
         queryFn: api.fetchUserList,
     });
 
-    // 2. LẤY CHI TIẾT USER ()
+    //chi tiết người dùng
     const detailQuery = useQuery({
         queryKey: ["users", "detail", userId],
         queryFn: () => api.fetchUserDetail(userId!),
@@ -21,7 +21,7 @@ export const useUsers = (userId?: string) => {
         staleTime: 10 * 60 * 1000
     });
 
-    // 3. ĐĂNG KÝ
+    //đăng kí
     const registerMutation = useMutation({
 
         mutationFn: ({ email, password }: { email: string, password: string }) => api.fetchRegister(email, password),
@@ -33,7 +33,7 @@ export const useUsers = (userId?: string) => {
         }
     });
 
-    // 4. ĐĂNG NHẬP
+    //đăng nhập
     const loginMutation = useMutation({
         mutationFn: ({ email, password }: { email: string, password: string }) => api.fetchLogin(email, password),
         onSuccess: (data) => {
@@ -47,7 +47,7 @@ export const useUsers = (userId?: string) => {
 
     });
 
-    // 5. CẬP NHẬT
+    //cập nhật người dùng
     const updateMutation = useMutation({
         mutationFn: api.fetchUpdateUser,
         onSuccess: () => {
@@ -55,6 +55,7 @@ export const useUsers = (userId?: string) => {
         },
     });
 
+    //xóa người dùng
     const deleteMutation = useMutation({
         mutationFn: api.fetchDeleteUser,
         onSuccess: () => {
@@ -65,11 +66,11 @@ export const useUsers = (userId?: string) => {
 
     return {
 
-        // Data
+        //dữ liệu
         users: listQuery.data,
         userDetail: detailQuery.data,
 
-        // Trạng thái loading
+        //trạng thái loading
         isLoadingList: listQuery.isLoading,
         isLoadingDetail: detailQuery.isLoading,
         isLoggingIn: loginMutation.isPending,
@@ -77,7 +78,7 @@ export const useUsers = (userId?: string) => {
         isUpdating: updateMutation.isPending,
         isDeleting: deleteMutation.isPending,
 
-        // Hành động (Actions)
+        //hành động 
         Register: registerMutation.mutate,
         login: loginMutation.mutate,
         updateUser: updateMutation.mutate,

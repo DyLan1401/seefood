@@ -39,7 +39,7 @@ export const getCategoryDetail = async (req, res) => {
             error: error.message
         })
     }
-}
+};
 
 //thêm danh mục
 export const AddCategory = async (req, res) => {
@@ -86,7 +86,7 @@ export const UpdateCategory = async (req, res) => {
             error: error.message
         })
     }
-}
+};
 
 //xóa danh mục
 export const DeleteCategory = async (req, res) => {
@@ -107,8 +107,9 @@ export const DeleteCategory = async (req, res) => {
             error: error.message
         })
     }
-}
+};
 
+//upload file
 export const uploadFile = async (req, res) => {
     try {
         if (!req.file) {
@@ -117,7 +118,7 @@ export const uploadFile = async (req, res) => {
 
         // Tải file lên Cloudinary
         const result = await cloudinary.uploader.upload(req.file.path, {
-            folder: 'seefood_categories', // Thư mục lưu ảnh trên Cloudinary
+            folder: 'seafood_categories', // Thư mục lưu ảnh trên Cloudinary
         });
 
         // Trả về URL thật của ảnh
@@ -127,4 +128,4 @@ export const uploadFile = async (req, res) => {
     } catch (error) {
         res.status(500).json({ message: 'Lỗi upload ảnh', error: error.message });
     }
-}
+};

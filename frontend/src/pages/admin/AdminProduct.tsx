@@ -1,22 +1,34 @@
+//lib
 import { useState } from 'react';
 import { Trash2, SquarePen, ImageIcon, Plus, PackageOpen } from 'lucide-react';
 
-// Store & Hooks
-import { useToastStore } from "../../store/useToastStore";
-import { useProduct } from "../../hooks/useProducts";
+//components
 import ProductModal from "../../component/ProductModal";
 
-// Types
+//zustands
+import { useToastStore } from "../../store/useToastStore";
+
+//Hooks
+import { useProduct } from "../../hooks/useProducts";
+
+//Types
 import type { Product } from "../../types/product";
 
 export default function AdminProducts() {
     const showToast = useToastStore((state) => state.show);
-    const { products, isLoadingProducts, deleteProduct } = useProduct();
 
-    // State quản lý Modal
+    // State
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
 
+
+    //custom hooks
+    const {
+        products,
+        deleteProduct,
+        isLoadingProducts,
+        isDeleting
+    } = useProduct();
     const productList = products?.items || [];
 
     const handleAddClick = () => {
@@ -115,7 +127,7 @@ export default function AdminProducts() {
                                             </span>
                                         </td>
                                         <td className="px-6 py-4 hidden md:table-cell">
-                                            <p className="max-w-[180px] text-gray-400 text-xs italic truncate">
+                                            <p className="max-w-45 text-gray-400 text-xs italic truncate">
                                                 {p.description || "Chưa có mô tả chi tiết..."}
                                             </p>
                                         </td>
@@ -129,9 +141,10 @@ export default function AdminProducts() {
                                                     <SquarePen size={18} />
                                                 </button>
                                                 <button
+                                                    disabled={isDeleting}
                                                     onClick={() => {
                                                         if (window.confirm(`Xác nhận xóa sản phẩm: ${p.name}?`)) {
-                                                            deleteProduct(p.id, {
+                                                            deleteProduct((p.id), {
                                                                 onSuccess: () => showToast(`Đã xóa ${p.name}`, "success"),
                                                                 onError: () => showToast("Lỗi khi xóa sản phẩm", "error")
                                                             });

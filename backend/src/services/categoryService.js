@@ -6,7 +6,7 @@ let categoriesCache = {};
 export const getCategory = async ({ page = 1, limit = 10 }) => {
   const cacheKey = `categories_p${page}_l${limit}`;
 
-  // BƯỚC 1: Kiểm tra xem trong túi có chưa?
+  // kiểm tra đã có data trong cache chưa
   if (categoriesCache[cacheKey]) {
     return categoriesCache[cacheKey];
   }
@@ -18,16 +18,16 @@ export const getCategory = async ({ page = 1, limit = 10 }) => {
   const countSql = `SELECT COUNT(*) as total FROM categories`;
   const [[{ total }]] = await pool.query(countSql);
 
-  // 2. Lấy dữ liệu danh mục (Đã xóa dấu phẩy thừa ở mảng params)
+  // 2. Lấy dữ liệu danh mục 
   let dataSql = `
         SELECT id, name, slug, image_url, created_at 
         FROM categories 
         ORDER BY id DESC 
         LIMIT ? OFFSET ?
     `;
-  const [rows] = await pool.query(dataSql, [limit, offset]); // Bỏ dấu phẩy thừa ở đây
+  const [rows] = await pool.query(dataSql, [limit, offset]);
 
-  // Trả về theo cấu trúc thống nhất để Frontend dễ xử lý
+  // 
   const result = {
     items: rows,
     pagination: {

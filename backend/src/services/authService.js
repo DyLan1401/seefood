@@ -1,7 +1,5 @@
 import pool from "../utils/db.js";
 
-
-
 //danh sách người dùng
 export const userList = async () => {
     const [rows] = await pool.query(
