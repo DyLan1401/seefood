@@ -3,14 +3,13 @@ import * as api from "../../api/orderApi";
 
 export const useOrderList = (page: number = 1) => {
     const queryList = useQuery({
-        queryKey: ["orders"],
+        queryKey: ["orders", page],
         queryFn: () => api.fetchOrderList(page),
-        select: (data) => data?.items || data || [],
         staleTime: 5 * 60 * 1000,
     });
 
     return {
-        orders: queryList.data,
+        orders: queryList.data?.items ?? [],
         pagination: queryList.data?.pagination,
         isLoading: queryList.isLoading,
         isError: queryList.isError,

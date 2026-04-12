@@ -16,13 +16,13 @@ export const userList = async ({ page = 1, limit = 5 }) => {
     const countSql = `SELECT COUNT(*) as total FROM users`;
     const [[{ total }]] = await pool.query(countSql);
 
-    const dataSql = await pool.query(
+    const dataSql =
         `SELECT *  
         from users
          ORDER BY id DESC
           LIMIT ? OFFSET ?
-`
-    );
+`;
+
 
     const [rows] = await pool.query(dataSql, [limit, offset]);
 

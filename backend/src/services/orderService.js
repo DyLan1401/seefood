@@ -9,13 +9,12 @@ export const getOrders = async ({ page = 1, limit = 5 }) => {
     const countSql = `SELECT COUNT(*) as total FROM orders`;
     const [[{ total }]] = await pool.query(countSql);
 
-    const dataSql = await pool.query(
+    const dataSql =
         `SELECT id,customer_name,phone,address,note,total,status,created_at 
         FROM orders
          ORDER BY id DESC
         LIMIT ? OFFSET ?
-`
-    );
+`;
 
     const [rows] = await pool.query(dataSql, [limit, offset]);
 
