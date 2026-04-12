@@ -6,6 +6,8 @@ export const useOrderMutations = () => {
 
     const invalidateOrders = () => {
         queryClient.invalidateQueries({ queryKey: ["orders"] });
+        queryClient.invalidateQueries({ queryKey: ["order-stats"] });
+
     };
 
     const createMutation = useMutation({

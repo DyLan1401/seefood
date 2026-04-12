@@ -184,5 +184,5 @@ export const getOrderStats = async () => {
          ORDER BY date ASC`
     );
 
-    return { totalOrders, totalRevenue, dailyRevenue };
+    return { totalOrders, totalRevenue: Number(totalRevenue), dailyRevenue };
 };

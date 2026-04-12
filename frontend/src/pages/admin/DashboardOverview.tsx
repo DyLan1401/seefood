@@ -47,12 +47,6 @@ export default function DashboardOverview() {
         }));
     }, [orderStats]);
 
-    // const revenueData = [
-    //     { name: 'T2', revenue: 2400 }, { name: 'T3', revenue: 1398 },
-    //     { name: 'T4', revenue: 9800 }, { name: 'T5', revenue: 3908 },
-    //     { name: 'T6', revenue: 4800 }, { name: 'T7', revenue: 3800 },
-    //     { name: 'CN', revenue: 4300 },
-    // ];
 
     if (isLoading) {
         return (
