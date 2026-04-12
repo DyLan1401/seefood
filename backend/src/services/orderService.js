@@ -6,6 +6,8 @@ export const getOrders = async ({ page = 1, limit = 5 }) => {
     const cacheKey = `order_p${page}_l${limit}`;
 
     const offset = (page - 1) * limit;
+    const countSql = `SELECT COUNT(*) as total FROM orders`;
+    const [[{ total }]] = await pool.query(countSql);
 
     const dataSql = await pool.query(
         `SELECT id,customer_name,phone,address,note,total,status,created_at 
