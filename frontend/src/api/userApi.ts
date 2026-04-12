@@ -3,7 +3,7 @@ import type { User } from "../types/user";
 
 //danh sách người dùng
 export const fetchUserList = async (page: number = 1) => {
-    const { data } = await api.get(`/user/all?page${page}`)
+    const { data } = await api.get(`/user/all?page=${page}`)
     return data;
 };
 

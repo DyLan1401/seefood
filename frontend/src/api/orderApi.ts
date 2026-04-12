@@ -3,7 +3,7 @@ import api from "./axios";
 
 //danhh sách đơn hàng
 export const fetchOrderList = async (page: number = 1) => {
-    const res = await api.get(`/order/all?page${page}`);
+    const res = await api.get(`/order/all?page=${page}`);
     return res.data;
 };
 
